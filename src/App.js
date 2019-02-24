@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Spendings from './components/Spendings/Spendings'
+import Spendings from './components/Spendings/Spendings';
+import Table from './components/Spendings/Table';
 import './App.css';
-const url = 'http://localhost:3001/spendings';
+const spend = 'http://localhost:3001/spendings';
 
 class App extends Component {
   constructor(){
@@ -12,7 +13,8 @@ class App extends Component {
   getInitialState = () => {
     const initial = 
     {
-      spendings: []
+      spendings: [],
+      initialSpendings: []
     }
     return initial;
   } 
@@ -22,12 +24,21 @@ class App extends Component {
   }
 
   loadData = () => {
-    fetch(url, {
+    fetch(spend, {
         method: 'get',
         headers: {'Content-Type' : 'application/json'}
     })
     .then(response => response.json())
-    .then(spendings=> this.updateData(spendings))
+    .then(spendings=> {
+      this.initialData(spendings);
+    })
+  }
+
+  initialData = (spendings) => {
+    this.setState({
+      spendings: spendings,
+      initialSpendings: spendings
+    })
   }
 
   componentDidMount = () => {
@@ -36,7 +47,7 @@ class App extends Component {
 
   updateData = (spendings) => {
     if(spendings[0]){
-      this.setState({ spendings:spendings })
+      this.setState({ spendings:spendings})
     } else {
       this.setState({ spendings:[] })
     }
@@ -46,7 +57,8 @@ class App extends Component {
     const {spendings} = this.state;
     return (
       <div className="App">
-          <Spendings spendings={spendings} loadData={this.loadData}></Spendings>
+        <Table spendings={spendings} updateData = {this.updateData}></Table>
+        <Spendings spendings={spendings} loadData={this.loadData}></Spendings>
       </div>
     );
   }

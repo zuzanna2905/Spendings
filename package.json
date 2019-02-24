@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "immutable": "^4.0.0-rc.12",
     "query-string": "^6.2.0",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2",
+    "react": "16.8.2",
+    "react-data-grid": "6.0.2-0",
+    "react-data-grid-addons": "^6.0.2-0",
+    "react-dom": "16.8.2",
+    "react-redux-datatable": "2.4.3",
     "react-scripts": "2.1.5",
     "react-vis": "^1.11.6",
     "tachyons": "^4.11.1"
