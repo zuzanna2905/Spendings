@@ -1,0 +1,11 @@
+.Input {
+    text-align: center;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: lightgray;
+}
+
+.Label{
+    margin-top: 15px;
+    text-transform: uppercase;
+}

@@ -6,6 +6,7 @@
         ChartLabel,
         RadialChart
     } from 'react-vis';
+    import classes from './Spendings.css'
 
     class Spendings extends Component {
 
@@ -99,7 +100,7 @@
     render() {
         const {spendings} = this.props;
         return (
-            <div className="ma2 pa3 flex flex-wrap">
+            <div className={classes.Spendings}>
                 <XYPlot 
                     xType="ordinal"
                     margin={{bottom: 80, left: 80}}

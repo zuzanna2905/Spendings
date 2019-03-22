@@ -1,26 +1,13 @@
 import React, { Component } from 'react';
-import Spendings from './components/Spendings/Spendings';
-import Table from './components/Spendings/Table';
-import './App.css';
+import Spendings from './containers/Spendings/Spendings';
+import Spending from './components/Spending/Spending';
+import Table from './components/Table/Table';
+import classes from './App.css';
 const spend = 'http://localhost:3001/spendings';
 
 class App extends Component {
-  constructor(){
-    super();
-    this.state = this.getInitialState();
-  }
-
-  getInitialState = () => {
-    const initial = 
-    {
-      spendings: [],
-      initialSpendings: []
-    }
-    return initial;
-  } 
-
-  reset = () => {
-    this.setState(this.getInitialState());
+  state = {
+    spendings: []
   }
 
   loadData = () => {
@@ -36,8 +23,7 @@ class App extends Component {
 
   initialData = (spendings) => {
     this.setState({
-      spendings: spendings,
-      initialSpendings: spendings
+      spendings: spendings
     })
   }
 
@@ -56,9 +42,10 @@ class App extends Component {
   render() {
     const {spendings} = this.state;
     return (
-      <div className="App">
-        <Table spendings={spendings} updateData = {this.updateData}></Table>
-        <Spendings spendings={spendings} loadData={this.loadData}></Spendings>
+      <div className={classes.App}>
+        <Spending/>
+        <Table spendings={spendings} updateData = {this.updateData}/>
+        <Spendings spendings={spendings} loadData={this.loadData}/>
       </div>
     );
   }

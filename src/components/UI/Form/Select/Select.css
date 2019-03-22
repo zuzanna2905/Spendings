@@ -1,0 +1,11 @@
+.Select {
+    padding: 5px;
+    text-align-last: center;
+    border-radius: 10px;
+    background-color: lightgray;
+}
+
+.Label{
+    margin-top: 15px;
+    text-transform: uppercase;
+}
