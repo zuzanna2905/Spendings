@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Charts from '../../containers/Charts/Charts';
 import Table from '../../components/Table/Table';
 import {Route, NavLink, Switch} from 'react-router-dom';
+import classes from './Spendings.css'
 
 const spend = 'http://localhost:3001/spendings';
 const cat = 'http://localhost:3001/categories';
@@ -52,9 +53,11 @@ class Spendings extends Component {
 
     render() {
         return (
-            <Fragment>
+            <div className={classes.Spendings}>
+            <nav>
                 <NavLink to={this.props.match.url + '/table'}> Spending Table</NavLink>
                 <NavLink to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
+            </nav>
                 <Switch>
                     <Route 
                         path={this.props.match.url + '/table'} 
@@ -74,7 +77,7 @@ class Spendings extends Component {
                         }
                     />
                 </Switch>
-            </Fragment>
+            </div>
         );
     }
 }

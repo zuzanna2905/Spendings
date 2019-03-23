@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDataGrid from "react-data-grid";
 import { Editors } from "react-data-grid-addons";
+import classes from './Table.css';
 const { DropDownEditor } = Editors;
 
 class Table extends React.Component {
@@ -39,16 +40,18 @@ class Table extends React.Component {
     render() {
         const {spendings} = this.props;
         return (
-        <ReactDataGrid
-            columns={this.setColumns()}
-            rowGetter={i => spendings[i]}
-            rowsCount={spendings.length}
-            onGridRowsUpdated={this.onGridRowsUpdated}      
-            onGridSort={(sortColumn, sortDirection) =>
-                this.props.updateData(this.sortRows(spendings, sortColumn, sortDirection))
-            }
-            enableCellSelect={true}
-        />
+            <div className={classes.Table}>
+            <ReactDataGrid
+                columns={this.setColumns()}
+                rowGetter={i => spendings[i]}
+                rowsCount={spendings.length}
+                onGridRowsUpdated={this.onGridRowsUpdated}      
+                onGridSort={(sortColumn, sortDirection) =>
+                    this.props.updateData(this.sortRows(spendings, sortColumn, sortDirection))
+                }
+                enableCellSelect={true}
+            />
+            </div>
         );
     }}
 
