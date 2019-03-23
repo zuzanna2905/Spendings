@@ -12,7 +12,7 @@ const select = (props) => {
         <Fragment>
             <label className={classes.Label}>{props.label}</label>
             <select className={classes.Select} name={props.label}>
-                <option value="" disabled selected>Select your {props.label}</option>
+                <option value="" disabled>Select your {props.label}</option>
                 {options}
             </select>
         </Fragment>

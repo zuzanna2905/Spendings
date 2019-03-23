@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from '../UI/Form/Form';
-import classes from './Spending.css';
+import classes from './AddingSpending.css';
 
 const formInputs = [
     {id: 1, category: 'input', type: 'number', label: 'value'},

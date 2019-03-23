@@ -1,51 +1,29 @@
 import React, { Component } from 'react';
-import Spendings from './containers/Spendings/Spendings';
-import Spending from './components/Spending/Spending';
+import Charts from './containers/Charts/Charts';
 import Table from './components/Table/Table';
+import {BrowserRouter, Route, NavLink, Switch} from 'react-router-dom';
 import classes from './App.css';
-const spend = 'http://localhost:3001/spendings';
 
 class App extends Component {
-  state = {
-    spendings: []
-  }
-
-  loadData = () => {
-    fetch(spend, {
-        method: 'get',
-        headers: {'Content-Type' : 'application/json'}
-    })
-    .then(response => response.json())
-    .then(spendings=> {
-      this.initialData(spendings);
-    })
-  }
-
-  initialData = (spendings) => {
-    this.setState({
-      spendings: spendings
-    })
-  }
-
-  componentDidMount = () => {
-    this.loadData();
-  }
-
-  updateData = (spendings) => {
-    if(spendings[0]){
-      this.setState({ spendings:spendings})
-    } else {
-      this.setState({ spendings:[] })
-    }
-  }
+  // <AddingSpending/>
+  // <Table spendings={spendings} updateData = {this.updateData}/>
+  // <Charts spendings={spendings} loadData={this.loadData}/>
 
   render() {
-    const {spendings} = this.state;
     return (
       <div className={classes.App}>
-        <Spending/>
-        <Table spendings={spendings} updateData = {this.updateData}/>
-        <Spendings spendings={spendings} loadData={this.loadData}/>
+        <BrowserRouter>
+          <nav>
+            <NavLink to='/'>Home</NavLink>
+            <NavLink to='/spending_table'>Table</NavLink>
+            <NavLink to='/charts'>Charts</NavLink>
+          </nav>
+          <Switch>
+            <Route path='/spending_table' component={Table} />
+            <Route path='/charts' component={Charts} />
+            <Route path='/' render={()=> <h1>HOME</h1>}/>
+          </Switch>
+        </BrowserRouter>
       </div>
     );
   }
