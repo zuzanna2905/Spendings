@@ -2,34 +2,8 @@ import React, { Component } from 'react';
 import XYPlot from '../../components/XYPlot/XYPlot';
 import RadialChart from '../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
-const spend = 'http://localhost:3001/spendings';
 
 class Charts extends Component {
-    state = {
-        spendings: []
-    }
-        
-    componentDidMount = () => {
-        fetch(spend, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'}
-        })
-        .then(response => response.json())
-        .then(spendings=> {        
-            this.setState({
-                spendings: spendings
-            })
-        })
-    }
-    
-    updateData = (spendings) => {
-        if(spendings[0]){
-          this.setState({ spendings:spendings})
-        } else {
-          this.setState({ spendings:[] })
-        }
-    }    
-
     getData = (array) => {
         const data = array.map((a, i) => {
             return {
@@ -112,7 +86,7 @@ class Charts extends Component {
     }
 
     render() {
-        const {spendings} = this.state;
+        const {spendings} = this.props;
         return (
             <div className={classes.Charts}>
                 <RadialChart 

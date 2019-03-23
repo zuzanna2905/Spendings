@@ -1,53 +1,9 @@
 import React from "react";
 import ReactDataGrid from "react-data-grid";
 import { Editors } from "react-data-grid-addons";
-const spend = 'http://localhost:3001/spendings';
-const cat = 'http://localhost:3001/categories';
 const { DropDownEditor } = Editors;
 
 class Table extends React.Component {
-    state = {
-        categoryTypes : [],
-        spendings: []
-    }
-    
-    updateData = (spendings) => {
-        if(spendings[0]){
-          this.setState({ spendings:spendings})
-        } else {
-          this.setState({ spendings:[] })
-        }
-    }
-
-    componentDidMount = () => {
-        fetch(cat, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'}
-          })
-          .then(response => response.json())
-          .then(categories => {
-              const categoryTypes = categories.map(c => {
-                  return {
-                      id: c.id,
-                      value: c.category
-                  }
-              })
-              this.setState({categoryTypes: categoryTypes})
-          })
-          .then(x => {
-            fetch(spend, {
-                method: 'get',
-                headers: {'Content-Type' : 'application/json'}
-            })
-            .then(response => response.json())
-            .then(spendings=> {        
-                this.setState({
-                    spendings: spendings
-                })
-            })
-        })
-    }
-
     setColumns = () => {
         return [{ key: 'name', name: 'Name', editable:true,resizable: true, sortable:true, type:'string' },
             { key: 'category', name: 'Category' , editable:true, resizable: true, editor: this.CategoryTypeEditor()},
@@ -57,7 +13,7 @@ class Table extends React.Component {
     }
 
     CategoryTypeEditor = () => {
-        return <DropDownEditor options={this.state.categoryTypes} />
+        return <DropDownEditor options={this.props.categoryTypes} />
     }
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -81,7 +37,7 @@ class Table extends React.Component {
     };
 
     render() {
-        const {spendings} = this.state;
+        const {spendings} = this.props;
         return (
         <ReactDataGrid
             columns={this.setColumns()}
