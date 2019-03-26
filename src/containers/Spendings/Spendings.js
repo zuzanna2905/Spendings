@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import Charts from '../../containers/Charts/Charts';
+import SelectData from '../../components/SelectData/SelectData';
 import Table from '../../components/Table/Table';
+import Charts from '../Charts/Charts';
 import AddSpending from './AddingSpending/AddingSpending';
-import {Route, NavLink, Switch} from 'react-router-dom';
+import {NavLink, Route} from 'react-router-dom';
 import classes from './Spendings.css';
 import queryString from 'query-string';
-import SelectData from '../../components/SelectData/SelectData';
+import moment from 'moment';
 
 const spend = 'http://localhost:3001/spendings';
 const cat = 'http://localhost:3001/categories';
@@ -14,18 +15,64 @@ class Spendings extends Component {
     state = {
         categoryTypes : [],
         spendings: [],
-        startDate: new Date(new Date().setDate((new Date()).getDate()-30)).toISOString(),
-        endDate: new Date().toISOString(),
-        account: 'all'
+        paramsInputs : {
+            startDate: {
+              type: 'input', 
+              elementConfig: {
+                  type: 'date',
+                  placeholder: 'Start Date'
+              },
+              value: moment().day(-30).format('YYYY-MM-DD'),
+              validation: {
+                  required: true
+              },
+              valid: false,
+              touched: false
+            },
+            endDate: {
+              type: 'input', 
+              elementConfig: {
+                type: 'date',
+                placeholder: 'End Date'
+              },
+              value: moment().format('YYYY-MM-DD'),
+              validation: {
+                  required: true
+              },
+              valid: false,
+              touched: false
+            },
+            account: {
+              type: 'select', 
+              elementConfig: {
+                  options: [
+                      {value: 'Zuzanna Konto'},
+                      {value: 'Piotr Konto'},
+                      {value: 'Zuzanna 2'}, 
+                      {value: 'Piotr 2'}
+                  ]
+              },
+              value: '',
+              validation: {
+                  required: true
+              },
+              valid: false,
+              touched: false
+            }
+          },
+        formIsValid: false
     }
 
-    componentDidMount = () => {
-        const params = '?' + queryString.stringify(
-        {
-            start: this.state.startDate,
-            end: this.state.endDate,
-            account: this.state.account
+    componentDidUpdate = (nextProps, nextState) => {
+        if(nextState.paramsInputs === this.state.paramsInputs){
+            return;
+        }
+        const query = '?' + queryString.stringify({
+            start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
+            end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
+            account : this.state.paramsInputs.account.value
         });
+        console.log(query)
         fetch(cat, {
             method: 'get',
             headers: {'Content-Type' : 'application/json'}
@@ -41,8 +88,7 @@ class Spendings extends Component {
               this.setState({categoryTypes: categoryTypes})
           })
           .then(x => {
-              console.log(params)
-            fetch(spend + params, {
+            fetch(spend + query, {
                 method: 'get',
                 headers: {'Content-Type' : 'application/json'},
             })
@@ -55,10 +101,17 @@ class Spendings extends Component {
         })
     }
 
-    setParams = (start, end, account) => {
-        if(end <= new Date()){
-            this.setState({startDate:start, endDate: end, account: account})
+    inputHandler = (e, inputID) => {
+        let inputForm = { ...this.state.paramsInputs};
+        let element = { ...inputForm[inputID]};
+        element.value = e.target.value;
+        element.touched = true;
+        inputForm[inputID] = element;
+        let formIsValid = true;
+        for(let i in inputForm){
+            formIsValid = inputForm[i].valid && formIsValid;
         }
+        this.setState({paramsInputs: inputForm, formIsValid: formIsValid});
     }
 
     updateData = (spendings) => {
@@ -67,53 +120,32 @@ class Spendings extends Component {
         } else {
           this.setState({ spendings:[] })
         }
-    }  
-
-    InputChangeHandler = (event) => {
-        console.log(event.target);
-        const {name, value} = event.target; 
-        this.setState({[name]: value})
-        console.log(this.state)
     }
-
 
     render() {
         return (
             <div className={classes.Spendings}>
                 <SelectData 
-                    params={this.props.setParams}
-                    changes={this.InputChangeHandler}
+                    paramsInputs={this.state.paramsInputs}
+                    inputHandler={this.inputHandler}
                 />
-                <nav>
+                <nav className={classes.Navigation}>
                     <NavLink to={this.props.match.url + '/table'}> Spending Table</NavLink>
                     <NavLink to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
                     <NavLink to={this.props.match.url + '/new'}>Add Spending</NavLink>
                 </nav>
-                <Switch>
-                    <Route 
-                        path={this.props.match.url + '/table'} 
-                        render={
-                            (props) => <Table 
-                                categoryTypes={this.state.categoryTypes} 
-                                spendings={this.state.spendings}
-                            />
-                        }
-                    />
-                    <Route 
-                        path={this.props.match.url + '/charts'} 
-                        render={
-                            (props)=> <Charts 
-                                spendings={this.state.spendings}
-                            />
-                        }
-                    />
-                    <Route 
-                        path={this.props.match.url + '/new'} 
-                        render={
-                            ()=> <AddSpending />
-                        }
-                    />
-                </Switch>
+                
+            <Route path={this.props.match.path + '/table'} 
+            render={(props) => <Table 
+                    categoryTypes={this.state.categoryTypes} 
+                    spendings={this.state.spendings}
+                    {...props}/>}/>
+            <Route path={this.props.match.path + '/charts'} 
+            render={(props)=> <Charts 
+                    spendings={this.state.spendings}
+                    {...props} />}/>
+            <Route path={this.props.match.path + '/new'} 
+            render={(props)=> <AddSpending  {...props}/>}/>
             </div>
         );
     }

@@ -41,7 +41,7 @@ const form = (props) => {
   return (
     <form className={classes.Form} onSubmit={props.clicked}>
       {inputs}
-      <button className={classes.Button}>{props.actionName}</button>
+      <button hidden={props.hidden} className={classes.Button}>{props.actionName}</button>
     </form>
   )
 }

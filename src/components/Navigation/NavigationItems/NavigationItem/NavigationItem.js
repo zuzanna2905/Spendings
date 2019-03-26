@@ -4,13 +4,13 @@ import {NavLink} from 'react-router-dom';
 
 const navigationItem = (props) => {
   return (
-    <div className={classes.NavigationItem}>
+    <li className={classes.NavigationItem}>
       <NavLink 
-          to={props.link} 
-          className={props.active ? classes.active : null}>
+          to={props.link}
+          activeClassName={classes.active}>
               {props.children}
       </NavLink>
-    </div>
+    </li>
   )
 }
 

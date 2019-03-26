@@ -41,9 +41,12 @@ class Table extends React.Component {
         const {spendings} = this.props;
         let table = <h3>Failed to load data</h3>;
         if(spendings[0]) {
+            const updatedDate = Object.keys(spendings).map(key => {
+                return {...spendings[key], date: spendings[key].date.slice(0,10)}
+            });
             table = <ReactDataGrid
             columns={this.setColumns()}
-            rowGetter={i => spendings[i]}
+            rowGetter={i => updatedDate[i]}
             rowsCount={spendings.length}
             onGridRowsUpdated={this.onGridRowsUpdated}      
             onGridSort={(sortColumn, sortDirection) =>
