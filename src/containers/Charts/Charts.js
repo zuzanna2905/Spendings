@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import XYPlot from '../../components/XYPlot/XYPlot';
 import RadialChart from '../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
@@ -49,9 +49,7 @@ class Charts extends Component {
             }})
         return values;
     }
-
-    //suma kilku kategorii
-    //pokaż dane dla kategorii
+    
     getRowsByCat = (array,cat) => {
         const values = array.filter(x => x.category === cat);
         return values;
@@ -87,11 +85,12 @@ class Charts extends Component {
 
     render() {
         const {spendings} = this.props;
-        return (
-            <div className={classes.Charts}>
+        let charts = <h3>Failed to load data!</h3>
+        if(spendings[0]){
+            charts = <Fragment>
                 <RadialChart 
-                    data={this.RadialCategory(spendings)} 
-                    title={"[Last Month Spendings]"}
+                data={this.RadialCategory(spendings)} 
+                title={"[Last Month Spendings]"}
                 />
                 <XYPlot 
                     max={this.getMaxCat(spendings)} 
@@ -100,6 +99,11 @@ class Charts extends Component {
                     chartLabelX={"[Values]"}
                     chartTitle={"Last Month Spendings"}
                 />
+            </Fragment>
+        }
+        return (
+            <div className={classes.Charts}>
+                {charts}
             </div>
         );
     }}

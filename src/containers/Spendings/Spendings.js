@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Charts from '../../containers/Charts/Charts';
 import Table from '../../components/Table/Table';
+import AddSpending from './AddingSpending/AddingSpending';
 import {Route, NavLink, Switch} from 'react-router-dom';
-import classes from './Spendings.css'
+import classes from './Spendings.css';
+import queryString from 'query-string';
+import SelectData from '../../components/SelectData/SelectData';
 
 const spend = 'http://localhost:3001/spendings';
 const cat = 'http://localhost:3001/categories';
@@ -10,10 +13,19 @@ const cat = 'http://localhost:3001/categories';
 class Spendings extends Component {
     state = {
         categoryTypes : [],
-        spendings: []
+        spendings: [],
+        startDate: new Date(new Date().setDate((new Date()).getDate()-30)).toISOString(),
+        endDate: new Date().toISOString(),
+        account: 'all'
     }
 
     componentDidMount = () => {
+        const params = '?' + queryString.stringify(
+        {
+            start: this.state.startDate,
+            end: this.state.endDate,
+            account: this.state.account
+        });
         fetch(cat, {
             method: 'get',
             headers: {'Content-Type' : 'application/json'}
@@ -29,9 +41,10 @@ class Spendings extends Component {
               this.setState({categoryTypes: categoryTypes})
           })
           .then(x => {
-            fetch(spend, {
+              console.log(params)
+            fetch(spend + params, {
                 method: 'get',
-                headers: {'Content-Type' : 'application/json'}
+                headers: {'Content-Type' : 'application/json'},
             })
             .then(response => response.json())
             .then(spendings=> {        
@@ -42,6 +55,11 @@ class Spendings extends Component {
         })
     }
 
+    setParams = (start, end, account) => {
+        if(end <= new Date()){
+            this.setState({startDate:start, endDate: end, account: account})
+        }
+    }
 
     updateData = (spendings) => {
         if(spendings[0]){
@@ -51,13 +69,26 @@ class Spendings extends Component {
         }
     }  
 
+    InputChangeHandler = (event) => {
+        console.log(event.target);
+        const {name, value} = event.target; 
+        this.setState({[name]: value})
+        console.log(this.state)
+    }
+
+
     render() {
         return (
             <div className={classes.Spendings}>
-            <nav>
-                <NavLink to={this.props.match.url + '/table'}> Spending Table</NavLink>
-                <NavLink to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
-            </nav>
+                <SelectData 
+                    params={this.props.setParams}
+                    changes={this.InputChangeHandler}
+                />
+                <nav>
+                    <NavLink to={this.props.match.url + '/table'}> Spending Table</NavLink>
+                    <NavLink to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
+                    <NavLink to={this.props.match.url + '/new'}>Add Spending</NavLink>
+                </nav>
                 <Switch>
                     <Route 
                         path={this.props.match.url + '/table'} 
@@ -74,6 +105,12 @@ class Spendings extends Component {
                             (props)=> <Charts 
                                 spendings={this.state.spendings}
                             />
+                        }
+                    />
+                    <Route 
+                        path={this.props.match.url + '/new'} 
+                        render={
+                            ()=> <AddSpending />
                         }
                     />
                 </Switch>

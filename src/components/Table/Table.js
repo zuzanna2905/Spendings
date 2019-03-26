@@ -39,18 +39,22 @@ class Table extends React.Component {
 
     render() {
         const {spendings} = this.props;
+        let table = <h3>Failed to load data</h3>;
+        if(spendings[0]) {
+            table = <ReactDataGrid
+            columns={this.setColumns()}
+            rowGetter={i => spendings[i]}
+            rowsCount={spendings.length}
+            onGridRowsUpdated={this.onGridRowsUpdated}      
+            onGridSort={(sortColumn, sortDirection) =>
+                this.props.updateData(this.sortRows(spendings, sortColumn, sortDirection))
+            }
+            enableCellSelect={true}
+            />
+        }
         return (
             <div className={classes.Table}>
-            <ReactDataGrid
-                columns={this.setColumns()}
-                rowGetter={i => spendings[i]}
-                rowsCount={spendings.length}
-                onGridRowsUpdated={this.onGridRowsUpdated}      
-                onGridSort={(sortColumn, sortDirection) =>
-                    this.props.updateData(this.sortRows(spendings, sortColumn, sortDirection))
-                }
-                enableCellSelect={true}
-            />
+                {table}
             </div>
         );
     }}
