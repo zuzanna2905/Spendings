@@ -1,0 +1,41 @@
+.Profile{
+
+}
+
+
+.Accounts{
+    margin: 10px;
+}
+
+.Accounts button{
+    margin: 10px;
+}
+
+.List {
+    list-style: none;
+    margin: 10px auto;
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 80%;
+}
+
+.List li {
+    padding: 10px 20px;
+    border: 1px dashed black;
+    width: 50%;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.List li p{
+    text-align: center;
+    padding: 0;
+    margin: 5px auto;
+}
+
+.List li button{
+    margin-left: 5px;
+}
