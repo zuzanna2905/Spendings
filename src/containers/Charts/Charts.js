@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import XYPlot from '../../components/XYPlot/XYPlot';
 import RadialChart from '../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
+import { connect } from 'react-redux';
 
 class Charts extends Component {
     getData = (array) => {
@@ -18,33 +19,26 @@ class Charts extends Component {
         const values = data.map(a => {return a.value})
         return values;
     }
-
-    getCategories = (array) => {
-        var categories = array.map(a => {return a.category});
-        return [...new Set(categories)];
-    }
     
     sumCat = (sum, number) => {
         return sum + parseInt(number.value)
     };
 
     sumByCategory = (array) => {
-        const categories = this.getCategories(array);
-        const values = categories.map((e,i) => {
+        const values = this.props.cats.map(c=> {
                 return {
-                x: e,
-                y: array.filter(a => a.category === e)
+                x: c.name,
+                y: array.filter(a => a.category === c.id)
                 .reduce(this.sumCat,0)
             }})
         return values;
     }
 
     RadialCategory = (array) => {
-        const categories = this.getCategories(array);
-        const values = categories.map((e,i) => {
+        const values = this.props.cats.map(c => {
                 return {
-                label: e,
-                angle: array.filter(a => a.category === e)
+                label: c.name,
+                angle: array.filter(a => a.category === c.id)
                 .reduce(this.sumCat,0)
             }})
         return values;
@@ -64,9 +58,8 @@ class Charts extends Component {
     }
 
     getMaxCat = (array) => {
-        const categories = this.getCategories(array);
-        return Math.max(...categories.map((e) => {
-                return array.filter(a => a.category === e)
+        return Math.max(...this.props.cats.map((c) => {
+                return array.filter(a => a.category === c.id)
                 .reduce(this.sumCat,0)
         }))
     }
@@ -108,4 +101,13 @@ class Charts extends Component {
         );
     }}
 
-export default Charts;
+
+const mapStateToProps = state => {
+    return {
+        spendings: state.spend.spendings,
+        columns: state.spend.columns,
+        cats: state.spend.categories
+    }
+}
+
+export default connect(mapStateToProps)(Charts);    

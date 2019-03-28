@@ -31,7 +31,7 @@ const account = (props) => {
 
 const mapStateToProps = state => {
     return {
-        newValue: state.newValue
+        newValue: state.prof.newValue
     }
 }
 

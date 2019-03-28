@@ -24,7 +24,7 @@ class Profile extends Component {
 
 const mapStateToProps = state =>{
     return {
-        profile: state.profile
+        profile: state.prof.profile
     }
 }
 

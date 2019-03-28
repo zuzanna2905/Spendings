@@ -5,16 +5,15 @@ import Charts from '../Charts/Charts';
 import AddSpending from './AddingSpending/AddingSpending';
 import {NavLink, Route} from 'react-router-dom';
 import classes from './Spendings.css';
-import queryString from 'query-string';
+//import queryString from 'query-string';
 import moment from 'moment';
+import { connect } from 'react-redux';
 
-const spend = 'http://localhost:3001/spendings';
-const cat = 'http://localhost:3001/categories';
+//const spend = 'http://localhost:3001/spendings';
+//const cat = 'http://localhost:3001/categories';
 
 class Spendings extends Component {
     state = {
-        categoryTypes : [],
-        spendings: [],
         paramsInputs : {
             startDate: {
               type: 'input', 
@@ -64,41 +63,41 @@ class Spendings extends Component {
     }
 
     componentDidUpdate = (nextProps, nextState) => {
-        if(nextState.paramsInputs === this.state.paramsInputs){
-            return;
-        }
-        const query = '?' + queryString.stringify({
-            start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
-            end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
-            account : this.state.paramsInputs.account.value
-        });
-        console.log(query)
-        fetch(cat, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'}
-          })
-          .then(response => response.json())
-          .then(categories => {
-              const categoryTypes = categories.map(c => {
-                  return {
-                      id: c.id,
-                      value: c.category
-                  }
-              })
-              this.setState({categoryTypes: categoryTypes})
-          })
-          .then(x => {
-            fetch(spend + query, {
-                method: 'get',
-                headers: {'Content-Type' : 'application/json'},
-            })
-            .then(response => response.json())
-            .then(spendings=> {        
-                this.setState({
-                    spendings: spendings
-                })
-            })
-        })
+        // if(nextState.paramsInputs === this.state.paramsInputs){
+        //     return;
+        // }
+        // const query = '?' + queryString.stringify({
+        //     start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
+        //     end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
+        //     account : this.state.paramsInputs.account.value
+        // });
+        // console.log(query)
+        // fetch(cat, {
+        //     method: 'get',
+        //     headers: {'Content-Type' : 'application/json'}
+        //   })
+        //   .then(response => response.json())
+        //   .then(categories => {
+        //       const categoryTypes = categories.map(c => {
+        //           return {
+        //               id: c.id,
+        //               value: c.category
+        //           }
+        //       })
+        //       this.setState({categoryTypes: categoryTypes})
+        //   })
+        //   .then(x => {
+        //     fetch(spend + query, {
+        //         method: 'get',
+        //         headers: {'Content-Type' : 'application/json'},
+        //     })
+        //     .then(response => response.json())
+        //     .then(spendings=> {        
+        //         this.setState({
+        //             spendings: spendings
+        //         })
+        //     })
+        // })
     }
 
     inputHandler = (e, inputID) => {
@@ -151,4 +150,16 @@ class Spendings extends Component {
     }
 }
 
-export default Spendings;
+const mapStateToProps = state => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Spendings);

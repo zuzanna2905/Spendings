@@ -2,19 +2,12 @@ import React from "react";
 import ReactDataGrid from "react-data-grid";
 import { Editors } from "react-data-grid-addons";
 import classes from './Table.css';
+import { connect } from 'react-redux';
 const { DropDownEditor } = Editors;
 
 class Table extends React.Component {
-    setColumns = () => {
-        return [{ key: 'name', name: 'Name', editable:true,resizable: true, sortable:true, type:'string' },
-            { key: 'category', name: 'Category' , editable:true, resizable: true, editor: this.CategoryTypeEditor()},
-            { key: 'value', name: 'Value' , editable:true,resizable: true, sortable:true, type:'number'},
-            { key: 'date', name: 'Date', editable:true,resizable: true},
-            { key: 'account', name: 'Account', editable:true,resizable: true}]
-    }
-
     CategoryTypeEditor = () => {
-        return <DropDownEditor options={this.props.categoryTypes} />
+        return <DropDownEditor options={this.props.cats} />
     }
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -38,14 +31,23 @@ class Table extends React.Component {
     };
 
     render() {
-        const {spendings} = this.props;
+        const _spendings = this.props.spendings;
+        const cats = this.props.cats;
+        const acc = this.props.accounts;
+        const  spendings = _spendings.map(s => {
+            return {
+                ...s, 
+                category: cats[cats.findIndex(c=> c.id === s.category)].name,
+                account: acc[acc.findIndex(a => a.id === s.account)].value
+            } 
+        });
         let table = <h3>Failed to load data</h3>;
         if(spendings[0]) {
             const updatedDate = Object.keys(spendings).map(key => {
                 return {...spendings[key], date: spendings[key].date.slice(0,10)}
             });
             table = <ReactDataGrid
-            columns={this.setColumns()}
+            columns={this.props.columns}
             rowGetter={i => updatedDate[i]}
             rowsCount={spendings.length}
             onGridRowsUpdated={this.onGridRowsUpdated}      
@@ -62,4 +64,13 @@ class Table extends React.Component {
         );
     }}
 
-export default Table;
+const mapStateToProps = state => {
+    return {
+        spendings: state.spend.spendings,
+        columns: state.spend.columns,
+        cats: state.spend.categories,
+        accounts: state.prof.accounts
+    }
+}
+
+export default connect(mapStateToProps)(Table);
