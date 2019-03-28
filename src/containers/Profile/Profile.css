@@ -12,12 +12,25 @@
     box-sizing: border-box;
 }
 
+button{
+    margin-left: 5px;
+    border-radius: 10px;
+    padding: 3px 10px;
+    background-color: lightgoldenrodyellow;
+}
+
+input {
+    background-color: lightgoldenrodyellow;
+    border-radius: 10px;
+    padding: 3px 10px;
+}
+
 p span {
     text-transform: uppercase;
     font-weight: bold;
 }
 
-@media(min-width: 500px){
+@media(min-width: 800px){
     .Data{
         padding: 0 20vh;
     }
