@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Form from '../../../components/UI/Form/Form';
 import classes from './AddingSpending.css';
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions';
 
 class Spending extends Component {
     state = {
@@ -28,7 +30,9 @@ class Spending extends Component {
                     ]
                 },
                 value: '',
-                validation: {},
+                validation: {
+                    required: true
+                },
                 valid: true,
                 touched: false
             },
@@ -81,27 +85,27 @@ class Spending extends Component {
     }
 
     spendingSubmitHandler = (e) => {
-        this.setState({loading: true})
-        const formData = {};
-        for(let elem in this.state.formInputs){
-            formData[elem] = this.state.formInputs[elem].value;
-        }
-        fetch('http://localhost:3001/spendings', {
-            method: 'post',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(res=> {
-            this.setState({loading: false});
-            console.log(this.props);
-            this.props.history.push('/')
-        })   
-        .catch(r => { this.setState({loading: false})})
+        // this.setState({loading: true})
+        // const formData = {};
+        // for(let elem in this.state.formInputs){
+        //     formData[elem] = this.state.formInputs[elem].value;
+        // }
+        // fetch('http://localhost:3001/spendings', {
+        //     method: 'post',
+        //     headers: {'Content-Type' : 'application/json'},
+        // })
+        // .then(res=> {
+        //     this.setState({loading: false});
+        //     console.log(this.props);
+        //     this.props.history.push('/')
+        // })   
+        // .catch(r => { this.setState({loading: false})})
     }
 
-    inputHandler = (e, inputID) => {
+    inputHandler = (inputID, e) => {
         let inputForm = { ...this.state.formInputs};
         let element = { ...inputForm[inputID]};
-        element.value = e.target.value;
+        element.value = e;
         element.valid = this.checkValidity(element.value, element.validation)
         element.touched = true;
         inputForm[inputID] = element;
@@ -134,7 +138,13 @@ class Spending extends Component {
                 <h1>Add New Spending</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={this.spendingSubmitHandler} 
+                    clicked={() => this.props.spendingSubmitHandler({
+                            name: this.state.formInputs.description.value,
+                            category: 1,//this.state.formInputs.category.value,
+                            value: +this.state.formInputs.value.value,
+                            date: this.state.formInputs.date.value,
+                            account: 1 //this.state.formInputs.account.value
+                    })} 
                     inputHandler={this.inputHandler}
                     actionName='ADD'
                 />
@@ -143,4 +153,10 @@ class Spending extends Component {
     }
 }
 
-export default Spending;
+const mapDispatchToProps = dispatch => {
+    return {
+        spendingSubmitHandler: (spending) => {dispatch({type: actions.ADD_SPENDING, spending: spending})}
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Spending);

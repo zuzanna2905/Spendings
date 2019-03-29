@@ -51,6 +51,12 @@ const reducer = (state= initialState, action) => {
                 ...state,
                 filterParams: inputForm
             }
+        case(actions.ADD_SPENDING):
+            console.log(action)
+            return {
+                ...state,
+                spendings: state.spendings.concat(action.spending)
+            }
         default:
             return state;
     }

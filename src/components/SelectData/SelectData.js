@@ -11,7 +11,7 @@ const selectData = (props) => {
       })
   }
   return (
-    <div className={classes.selectData}>
+    <div className={classes.SelectData}>
       <h1>PLEASE SELECT PARAMS</h1>
       <Form 
         inputs={formElementsArray}

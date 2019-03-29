@@ -15,12 +15,23 @@
     color: black;
     font-weight: bold;
     text-decoration: none;
-    border: 1px dashed black;
+    border: 1px dashed gray;
     border-radius: 15px;
+    background-color: white;
 }
 
 @media (min-width: 500px){
     .Navigation{
         flex-flow: row;
     }
+}
+
+.Button {
+    background-color: white;
+    padding: 10px 10px;
+    margin: 0px 10px;
+    border: 1px dashed gray;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
 }

@@ -59,7 +59,17 @@ class Spendings extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        showNewAdding: false,
+        showParamsSelecting: true
+    }
+
+    showAddingHandler = () =>{
+        this.setState({showNewAdding: !this.state.showNewAdding, showParamsSelecting: false})
+    }
+
+    showSelectingHandler = () =>{
+        this.setState({showParamsSelecting: !this.state.showParamsSelecting, showNewAdding: false})
     }
 
     //componentDidUpdate = (nextProps, nextState) => {
@@ -111,22 +121,32 @@ class Spendings extends Component {
     }
 
     render() {
+        let newSpendings = null;
+        if(this.state.showNewAdding){
+            newSpendings = <AddSpending />
+        }
+        let paramsSelecting = null;
+        if(this.state.showParamsSelecting){
+            paramsSelecting = 
+            <SelectData 
+                paramsInputs={this.state.paramsInputs}
+                inputHandler={this.inputHandler}/>
+        }
+
         return (
             <div className={classes.Spendings}>
-                <SelectData 
-                    paramsInputs={this.state.paramsInputs}
-                    inputHandler={this.inputHandler}/>
+                <button className={classes.Button} onClick={this.showAddingHandler}>ADD SPENDING</button>
+                <button className={classes.Button} onClick={this.showSelectingHandler}>FILTER SPENDINGS</button>
+                {paramsSelecting}            
+                {newSpendings}
                 <nav className={classes.Navigation}>
                     <NavLink to={this.props.match.url + '/table'}> Spending Table</NavLink>
                     <NavLink to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
-                    <NavLink to={this.props.match.url + '/new'}>Add Spending</NavLink>
                 </nav>    
                 <Route path={this.props.match.path + '/table'} 
                 component={Table}/>
                 <Route path={this.props.match.path + '/charts'} 
                 component={Charts}/>
-                <Route path={this.props.match.path + '/new'} 
-                component={AddSpending}/>
             </div>
         );
     }

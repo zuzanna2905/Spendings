@@ -32,6 +32,7 @@ class Table extends React.Component {
 
     render() {
         const _spendings = this.props.spendings;
+        console.log(_spendings)
         const cats = this.props.cats;
         const acc = this.props.accounts;
         const  spendings = _spendings.map(s => {
