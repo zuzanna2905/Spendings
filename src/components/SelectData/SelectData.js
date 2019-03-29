@@ -14,14 +14,14 @@ const selectData = (props) => {
     <div className={classes.selectData}>
       <h1>PLEASE SELECT PARAMS</h1>
       <Form 
-        inputs={formElementsArray} 
-        clicked={props.setValues} 
+        inputs={formElementsArray}
         inputHandler={props.inputHandler}
         hidden={true}
-        actionName='ADD'
+        actionName='SET'
+        clicked={props.setFilters}
       />
     </div>
   )
 }
 
-export default selectData;
+export default (selectData);

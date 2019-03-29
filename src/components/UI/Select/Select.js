@@ -8,6 +8,7 @@ const select = (props) => {
             return <option key={o.value} value={o.value}>{o.value}</option>
         })
     }
+    let label = props.value ? props.value: `Select your ${props.name}`
     return (
         <Fragment>
             <label className={classes.Label}>{props.name}</label>
@@ -17,7 +18,7 @@ const select = (props) => {
                 value={props.value} 
                 onChange={props.changed}
             >
-                <option value='' disabled>Select your {props.name}</option>
+                <option value={props.value} disabled>{label}</option>
                 {options}
             </select>
         </Fragment>

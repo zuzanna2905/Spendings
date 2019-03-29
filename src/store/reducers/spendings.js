@@ -33,7 +33,7 @@ const initialState = {
         { key: 'date', name: 'Date', editable:true,resizable: true},
         { key: 'account', name: 'Account', editable:true,resizable: true}
     ],
-    filter: {
+    filterParams: {
         startDate: '',
         endDate: '',
         account: ''
@@ -41,7 +41,19 @@ const initialState = {
 }
 
 const reducer = (state= initialState, action) => {
-    return state;
+    switch(action.type){
+        case(actions.SET_PARAM_VALUE):
+            let inputForm = state.filterParams;
+            let element = { ...inputForm[action.inputID]};
+            element = action.value;
+            inputForm[action.inputID] = element;
+            return {
+                ...state,
+                filterParams: inputForm
+            }
+        default:
+            return state;
+    }
 }
 
 export default reducer;

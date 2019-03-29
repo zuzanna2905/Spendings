@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import XYPlot from '../../components/XYPlot/XYPlot';
-import RadialChart from '../../components/RadialChart/RadialChart';
+import XYPlot from '../../../components/XYPlot/XYPlot';
+import RadialChart from '../../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
 import { connect } from 'react-redux';
 

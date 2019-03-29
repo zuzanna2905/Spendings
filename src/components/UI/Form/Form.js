@@ -14,25 +14,23 @@ const form = (props) => {
             value={input.config.value} 
             {...input.config.elementConfig}  
             name={input.id}
-            changed={(e) => props.inputHandler(e, input.id)}
+            changed={(e) => props.inputHandler(input.id, e.target.value)}
           />
         case('select'):
           return <Select 
             key={input.id} 
             value={input.config.value} 
             name={input.id} 
-            options={input.config.elementConfig.options} 
-            InputChange={props.changed}
-            changed={(e) => props.inputHandler(e, input.id)}
+            options={input.config.elementConfig.options}
+            changed={(e) => props.inputHandler(input.id, e.target.value)}
           />
         default:
           return <Input 
             key={input.id} 
             value={input.config.value} 
             {...input.config.elementConfig}  
-            name={input.id} 
-            InputChange={props.changed}
-            changed={(e) => props.inputHandler(e, input.id)}
+            name={input.id}
+            changed={(e) => props.inputHandler(input.id, e.target.value)}
           />
       
       }
@@ -46,4 +44,4 @@ const form = (props) => {
   )
 }
 
-export default form;
+export default (form);

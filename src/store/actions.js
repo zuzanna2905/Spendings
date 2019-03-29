@@ -8,3 +8,5 @@ export const EDIT_ON = 'EDIT_ON';
 export const NEW_ACCOUNT_NAME = 'NEW_ACCOUNT_NAME';
 
 //SPENDINGS
+
+export const SET_PARAM_VALUE = 'SET_PARAM_VALUE';
