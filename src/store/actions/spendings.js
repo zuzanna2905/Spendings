@@ -94,3 +94,63 @@ export const fetchCategories = () => {
         })
     }
 }
+
+export const updateDataStart = () => {
+    return {
+        type: actionTypes.UPDATE_CELL_START
+    }
+}
+
+export const updateDataSuccess = () => {
+    return {
+        type: actionTypes.UPDATE_CELL_SUCCESS
+    }
+}
+
+export const updateDataFail = () => {
+    return {
+        type: actionTypes.UPDATE_CELL_FAIL
+    }
+}
+
+export const updateData = () => {
+    return dispatch =>{
+        dispatch(updateDataStart());
+    }
+}
+
+export const addSpendingStart = () => {
+    return {
+        type: actionTypes.ADD_SPENDING_START
+    }
+}
+
+export const addSpendingSuccess = () => {
+    return {
+        type: actionTypes.ADD_SPENDING_SUCCESS
+    }
+}
+
+export const addSpendingFail = () => {
+    return {
+        type: actionTypes.ADD_SPENDING_FAIL
+    }
+}
+
+export const deleteSpendingStart = () => {
+    return {
+        type: actionTypes.DELETE_SPENDING_START
+    }
+}
+
+export const deleteSpendingSuccess = () => {
+    return {
+        type: actionTypes.DELETE_SPENDING_SUCCESS
+    }
+}
+
+export const deleteSpendingFail = () => {
+    return {
+        type: actionTypes.DELETE_SPENDING_FAIL
+    }
+}

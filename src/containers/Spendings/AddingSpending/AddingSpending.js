@@ -84,6 +84,18 @@ class Spending extends Component {
         loading: false
     }
 
+    componentWillMount () {
+        // const categories = this.props.categories;
+        // this.setState({
+        //     formInputs: {
+        //     category : {
+        //         elementConfig : {
+        //             options: categories
+        //     }
+        // }}})
+        // console.log(this.state.formInputs)
+    }
+
     spendingSubmitHandler = (e) => {
         // this.setState({loading: true})
         // const formData = {};
@@ -153,10 +165,16 @@ class Spending extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        categories: state.spend.categories
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         spendingSubmitHandler: (spending) => dispatch(actions.addSpending(spending))
     }
 }
 
-export default connect(null, mapDispatchToProps)(Spending);
+export default connect(mapStateToProps, mapDispatchToProps)(Spending);

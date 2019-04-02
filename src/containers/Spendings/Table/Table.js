@@ -3,6 +3,8 @@ import ReactDataGrid from "react-data-grid";
 import { Editors } from "react-data-grid-addons";
 import classes from './Table.css';
 import { connect } from 'react-redux';
+import * as actions from '../../../store/actions/index';
+
 const { DropDownEditor } = Editors;
 
 class Table extends React.Component {
@@ -32,9 +34,8 @@ class Table extends React.Component {
 
     render() {
         const _spendings = this.props.spendings;
-        console.log(_spendings);
         const cats = this.props.cats;
-        const acc = this.props.accounts;
+      //  const acc = this.props.accounts;
         const spendings = _spendings.map(s => {
             return {
                 ...s, 
@@ -73,4 +74,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = dispatch => {
+    return {
+        updateData: () => dispatch(actions.updateData())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

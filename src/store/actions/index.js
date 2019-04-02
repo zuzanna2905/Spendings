@@ -12,5 +12,6 @@ export {
     setParamValue,
     addSpending,
     fetchCategories,
-    fetchSpendings
+    fetchSpendings, 
+    updateData
 } from './spendings';
