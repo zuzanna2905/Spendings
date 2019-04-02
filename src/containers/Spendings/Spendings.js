@@ -8,7 +8,7 @@ import classes from './Spendings.css';
 //import queryString from 'query-string';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import * as actions from '../../store/actions';
+import * as actions from '../../store/actions/index';
 
 //const spend = 'http://localhost:3001/spendings';
 //const cat = 'http://localhost:3001/categories';
@@ -154,7 +154,7 @@ class Spendings extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setParamsValue: (paramId, value) => {dispatch({type: actions.SET_PARAM_VALUE, inputID: paramId, value: value})}
+        setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value))
     }
 }
 

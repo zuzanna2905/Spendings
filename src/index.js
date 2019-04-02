@@ -4,17 +4,18 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'tachyons';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import profileReducer from './store/reducers/profile';
 import spendingsReducer from './store/reducers/spendings';
+import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     prof: profileReducer,
     spend: spendingsReducer
 })
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(<Provider store={store}> <App /> </Provider>, document.getElementById('root'));
 

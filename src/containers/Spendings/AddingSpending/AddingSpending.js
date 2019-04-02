@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Form from '../../../components/UI/Form/Form';
 import classes from './AddingSpending.css';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions';
+import * as actions from '../../../store/actions/index';
 
 class Spending extends Component {
     state = {
@@ -155,7 +155,7 @@ class Spending extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        spendingSubmitHandler: (spending) => {dispatch({type: actions.ADD_SPENDING, spending: spending})}
+        spendingSubmitHandler: (spending) => dispatch(actions.addSpending(spending))
     }
 }
 

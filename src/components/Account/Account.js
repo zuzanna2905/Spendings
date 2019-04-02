@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions';
+import * as actions from '../../store/actions/index';
 
 const account = (props) => {
     const account = props.account;
@@ -37,10 +37,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        removeAccount: (id) => {dispatch({type: actions.REMOVE_ACCOUNT, accountId: id})},
-        editAccount: (id) => {dispatch({type: actions.EDIT_ACCOUNT, accountId: id})},
-        showEditAccount: (id) => {dispatch({type: actions.EDIT_ON, accountId: id})},
-        onChangeAccount: (e) => {dispatch({type: actions.NEW_ACCOUNT_NAME, value: e.target.value})}
+        removeAccount: (id) => dispatch(actions.removeAccount(id)),
+        editAccount: (id) => dispatch(actions.editAccount(id)),
+        showEditAccount: (id) => dispatch(actions.editOn(id)),
+        onChangeAccount: (e) => dispatch(actions.newAccountName(e.target.value))
     }
 }
 

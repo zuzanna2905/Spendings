@@ -1,5 +1,4 @@
 //PROFILE
-
 export const ADD_ACOUNT = 'ADD_ACOUNT';
 export const REMOVE_ACCOUNT = 'REMOVE_ACCOUNT';
 export const EDIT_ACCOUNT = 'EDIT_ACCOUNT';
@@ -8,6 +7,5 @@ export const EDIT_ON = 'EDIT_ON';
 export const NEW_ACCOUNT_NAME = 'NEW_ACCOUNT_NAME';
 
 //SPENDINGS
-
 export const SET_PARAM_VALUE = 'SET_PARAM_VALUE';
 export const ADD_SPENDING = 'ADD_SPENDING';

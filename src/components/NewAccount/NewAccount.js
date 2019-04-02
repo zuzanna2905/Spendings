@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions';
+import * as actions from '../../store/actions/index';
 
 const newAccount = (props) => {
   return (
@@ -26,8 +26,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addNewAccount: () => {dispatch({type: actions.ADD_ACOUNT})},
-        addAccountHandler: (e) => {dispatch({type: actions.SET_ACCOUNT, value: e.target.value})}
+        addNewAccount: () => dispatch(actions.addAccount()),
+        addAccountHandler: (e) => dispatch(actions.setAccount(e.target.value))
     }
 }
 
