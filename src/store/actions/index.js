@@ -4,10 +4,13 @@ export {
     removeAccount, 
     editAccount,
     editOn,
-    newAccountName
+    newAccountName,
+    fetchAccounts
 } from './profile';
 
 export {
     setParamValue,
-    addSpending
+    addSpending,
+    fetchCategories,
+    fetchSpendings
 } from './spendings';

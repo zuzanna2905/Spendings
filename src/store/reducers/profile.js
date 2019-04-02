@@ -6,14 +6,10 @@ const initialState = {
         email: 'susan@gmail.com',
         age: 23
     },
-    accounts : [
-        {id: 1, value: 'Zuzanna Konto', edit: false},
-        {id: 2, value: 'Piotr Konto', edit: false},
-        {id: 3, value: 'Zuzanna 2', edit: false},
-        {id: 4, value: 'Piotr 2', edit: false}
-    ],
+    accounts : null,
     newAccount: '',
-    newValue: ''
+    newValue: '',
+    loading: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -23,7 +19,7 @@ const reducer = (state = initialState, action) => {
         case actions.ADD_ACOUNT:
             return {
                 ...state, 
-                accounts : state.accounts.concat({value: state.newAccount, id: (Math.random() * 1000).toFixed(0), edit: false}),
+                accounts : state.accounts.concat({name: state.newAccount, id: (Math.random() * 1000).toFixed(0), edit: false}),
                 newAccount: ''
             }
         case actions.REMOVE_ACCOUNT:
@@ -35,7 +31,7 @@ const reducer = (state = initialState, action) => {
         case actions.EDIT_ACCOUNT:
             newAccounts = [...state.accounts];
             index = newAccounts.findIndex((elem)=> elem.id === action.accountId);
-            newAccounts[index] =  {id: action.accountId, value: state.newValue, edit: false};
+            newAccounts[index] =  {id: action.accountId, name: state.newValue, edit: false};
             return {
                 ...state, 
                 accounts: newAccounts,
@@ -63,6 +59,23 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state, 
                 accounts: accounts
+            }
+        case actions.FETCH_ACCOUNTS_START:
+            return {
+                ...state,
+                loading: action.loading
+            }
+        case actions.FETCH_ACCOUNTS_SUCCESS:
+        console.log(action.accounts)
+            return {
+                ...state,
+                loading: action.loading,
+                accounts: action.accounts
+            }
+        case actions.FETCH_ACCOUNTS_FAIL:
+            return {
+                ...state,
+                loading: action.loading
             }
         default: 
             return state;

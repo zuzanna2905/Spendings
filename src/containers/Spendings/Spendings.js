@@ -5,13 +5,10 @@ import Charts from './Charts/Charts';
 import AddSpending from './AddingSpending/AddingSpending';
 import {NavLink, Route} from 'react-router-dom';
 import classes from './Spendings.css';
-//import queryString from 'query-string';
+import queryString from 'query-string';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import * as actions from '../../store/actions/index';
-
-//const spend = 'http://localhost:3001/spendings';
-//const cat = 'http://localhost:3001/categories';
 
 class Spendings extends Component {
     state = {
@@ -72,43 +69,15 @@ class Spendings extends Component {
         this.setState({showParamsSelecting: !this.state.showParamsSelecting, showNewAdding: false})
     }
 
-    //componentDidUpdate = (nextProps, nextState) => {
-        // if(nextState.paramsInputs === this.state.paramsInputs){
-        //     return;
-        // }
-        // const query = '?' + queryString.stringify({
-        //     start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
-        //     end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
-        //     account : this.state.paramsInputs.account.value
-        // });
-        // console.log(query)
-        // fetch(cat, {
-        //     method: 'get',
-        //     headers: {'Content-Type' : 'application/json'}
-        //   })
-        //   .then(response => response.json())
-        //   .then(categories => {
-        //       const categoryTypes = categories.map(c => {
-        //           return {
-        //               id: c.id,
-        //               value: c.category
-        //           }
-        //       })
-        //       this.setState({categoryTypes: categoryTypes})
-        //   })
-        //   .then(x => {
-        //     fetch(spend + query, {
-        //         method: 'get',
-        //         headers: {'Content-Type' : 'application/json'},
-        //     })
-        //     .then(response => response.json())
-        //     .then(spendings=> {        
-        //         this.setState({
-        //             spendings: spendings
-        //         })
-        //     })
-        // })
-   // }
+    componentDidMount () {
+        const query = '?' + queryString.stringify({
+            start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
+            end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
+            account : this.state.paramsInputs.account.value
+        });
+        this.props.fetchCategories();
+        this.props.fetchSpendings(query);
+    }
 
     inputHandler = (inputID, e) => {
         let inputForm = { ...this.state.paramsInputs};
@@ -154,7 +123,9 @@ class Spendings extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value))
+        setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value)),
+        fetchCategories: () => dispatch(actions.fetchCategories()),
+        fetchSpendings: (query) => dispatch(actions.fetchSpendings(query))
     }
 }
 

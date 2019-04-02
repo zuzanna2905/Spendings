@@ -3,6 +3,7 @@ import Account from '../../../components/Account/Account';
 import classes from './Accounts.css';
 import { connect } from 'react-redux';
 import NewAccount from '../../../components/NewAccount/NewAccount';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
 class Accounts extends Component {
     state = {
@@ -28,19 +29,22 @@ class Accounts extends Component {
         if(this.state.showInputAccount) {
             inputAccount = <NewAccount/>
         }
-
+        let accounts = <Spinner />
+        if(this.props.accounts){
+            accounts = <ul hidden={!this.state.showAccounts} className={classes.List}>
+            Accounts ({this.props.accounts.length})
+            {
+                this.props.accounts.map(account => <Account account={account} key={account.id}/>)
+            }
+        </ul>
+        }
         return (
             <div className={classes.Accounts}>
                 <h3>Accounts managing</h3>
                 <button onClick={this.showAccountsHandler}>{buttonLabel}</button>
                 <button onClick={this.showAccountAddingHandler}>Create new Account</button>
                     {inputAccount}
-                <ul hidden={!this.state.showAccounts} className={classes.List}>
-                    Accounts ({this.props.accounts.length})
-                    {
-                        this.props.accounts.map(account => <Account account={account} key={account.id}/>)
-                    }
-                </ul>
+                    {accounts}
             </div>
         );
     }
@@ -48,7 +52,8 @@ class Accounts extends Component {
 
 const mapStateToProps = state =>{
     return {
-        accounts: state.prof.accounts
+        accounts: state.prof.accounts,
+        loading: state.prof.loading
     }
 }
 

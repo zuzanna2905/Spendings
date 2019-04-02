@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 
 const account = (props) => {
+    console.log(props)
     const account = props.account;
     let editAccount = '';
     if(account.edit){
@@ -20,7 +21,7 @@ const account = (props) => {
     }
     return (
     <li>
-        <p>{account.value}</p>
+        <p>{account.name}</p>
         <button onClick={() => props.removeAccount(account.id)}>Delete</button>
         <button onClick={() => props.showEditAccount(account.id)}>Edit</button>
             {editAccount}

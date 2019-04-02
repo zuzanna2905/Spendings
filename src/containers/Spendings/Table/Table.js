@@ -32,14 +32,13 @@ class Table extends React.Component {
 
     render() {
         const _spendings = this.props.spendings;
-        console.log(_spendings)
+        console.log(_spendings);
         const cats = this.props.cats;
         const acc = this.props.accounts;
-        const  spendings = _spendings.map(s => {
+        const spendings = _spendings.map(s => {
             return {
                 ...s, 
-                category: cats[cats.findIndex(c=> c.id === s.category)].name,
-                account: acc[acc.findIndex(a => a.id === s.account)].value
+                category: cats[cats.findIndex(c=> c.id === s.category)].name
             } 
         });
         let table = <h3>Failed to load data</h3>;
