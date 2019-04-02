@@ -24,7 +24,7 @@ export const fetchSpendingsStart = () => {
     }
 }
 
-export const fetchSpendingsSuccess = (spendings) => {
+export const fetchSpendingsSuccess = (spendings, columns) => {
     return {
         type: actionTypes.FETCH_SPENDINGS_SUCCESS,
         spendings: spendings,
@@ -69,8 +69,10 @@ export const fetchSpendings = (query) => {
             headers: {'Content-Type' : 'application/json'},
         })
         .then(response => response.json())
-        .then(spendings=> {        
-            dispatch(fetchSpendingsSuccess(spendings))
+        .then(spendings=> {
+            const columns = Object.keys(spendings[0]).map(s =>  s)
+            dispatch(setColumns(columns))
+            dispatch(fetchSpendingsSuccess(spendings));
         })
         .catch(err => {
             dispatch(fetchSpendingsFail(err))
@@ -152,5 +154,12 @@ export const deleteSpendingSuccess = () => {
 export const deleteSpendingFail = () => {
     return {
         type: actionTypes.DELETE_SPENDING_FAIL
+    }
+}
+
+export const setColumns = (columns) =>{
+    return {
+        type: actionTypes.GET_COLUMNS_SUCCESS,
+        columns: columns
     }
 }

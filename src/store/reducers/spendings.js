@@ -3,13 +3,7 @@ import * as actions from '../actions/actionTypes';
 const initialState = {
     categories : null,
     spendings: null,
-    columns: [
-        { key: 'name', name: 'Name', editable:true,resizable: true, sortable:true, type:'string' },
-        { key: 'category', name: 'Category' , editable:true, resizable: true},
-        { key: 'value', name: 'Value' , editable:true,resizable: true, sortable:true, type:'number'},
-        { key: 'date', name: 'Date', editable:true,resizable: true},
-        { key: 'account', name: 'Account', editable:true,resizable: true}
-    ],
+    columns: null,
     filterParams: {
         startDate: '',
         endDate: '',
@@ -40,13 +34,11 @@ const reducer = (state= initialState, action) => {
                 loading: action.loading
             }
         case actions.FETCH_SPENDINGS_START:
-            console.log(action.loading)
             return {
                 ...state,
                 loading: action.loading
             }
         case actions.FETCH_SPENDINGS_SUCCESS:
-            console.log(action.spendings)
             return{
                 ...state,
                 spendings: action.spendings,
@@ -58,7 +50,6 @@ const reducer = (state= initialState, action) => {
                 loading: action.loading
             }
         case actions.FETCH_CATEGORIES_SUCCESS:
-        console.log(action.categories)
             return {
                 ...state,
                 loading: action.loading,
@@ -68,6 +59,19 @@ const reducer = (state= initialState, action) => {
             return {
                 ...state,
                 loading: action.loading
+            }
+        case actions.GET_COLUMNS_SUCCESS:
+            const newColumns = action.columns.map(c => {
+                return {
+                key: c,
+                name: c.charAt(0).toUpperCase() + c.slice(1),
+                editable: true,
+                resizable: true,
+                sortable: true
+            }})
+            return {
+                ...state,
+                columns: newColumns
             }
         default:
             return state;
