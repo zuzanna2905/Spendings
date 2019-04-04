@@ -1,0 +1,16 @@
+.Home{
+    height: 90vh;
+    text-align: center;
+    vertical-align: middle;
+    display: flex;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@media(max-width: 900px){
+    .Home {
+        margin-top: 0;
+        background-size: 110vw 100vh;
+    }
+}

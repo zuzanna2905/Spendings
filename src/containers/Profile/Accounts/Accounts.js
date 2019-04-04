@@ -43,10 +43,10 @@ class Accounts extends Component {
         return (
             <div className={classes.Accounts}>
                 <h3>Accounts managing</h3>
-                <button onClick={this.showAccountsHandler}>{buttonLabel}</button>
+                <button onClick={this.showAccountsHandler}>{buttonLabel}</button>            
+                    {accounts}
                 <button onClick={this.showAccountAddingHandler}>Create new Account</button>
                     {inputAccount}
-                    {accounts}
             </div>
         );
     }
