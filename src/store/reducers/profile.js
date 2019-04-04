@@ -4,7 +4,11 @@ const initialState = {
     profile: {    
         name: 'Susan',
         email: 'susan@gmail.com',
-        age: 23
+        age: 23,
+        town: 'Gdańsk',
+        street: 'Leśna 15',
+        postCode: '20040',
+        country: 'Poland'
     },
     accounts : null,
     newAccount: '',

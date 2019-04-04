@@ -10,24 +10,32 @@
     list-style: none;
     margin: 10px auto;
     padding: 0;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    width: 80%;
+    display: grid;
+    grid-template-columns: 100%;
+    justify-items: center;
+    align-items: stretch;
+    width: 80%; 
 }
 
 .List li {
-    padding: 10px 20px;
+    padding: 10px 10px;
     border: 1px dashed gray;
-    width: 50%;
+    width: 90%;
     margin-top: 5px;
     box-sizing: border-box;
     border-radius: 10px;
-    background-color: white;
+    background-color: lightgray;
 }
 
 .List li p{
     text-align: center;
     padding: 0;
     margin: 5px auto;
+}
+
+
+@media(min-width: 900px){
+    .List {
+        grid-template-columns: 50% 50%;
+    }
 }

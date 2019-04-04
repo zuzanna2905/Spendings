@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 
 const account = (props) => {
-    console.log(props)
     const account = props.account;
     let editAccount = '';
     if(account.edit){

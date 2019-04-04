@@ -1,16 +1,25 @@
 .Profile{
-    
+    margin: 10px 20px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px;
+    justify-content: space-around;
+    display: grid;
+    grid-template-columns: 100%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .Data {
     display: inline-block;
-    width: 40%;
+    width: 70%;
     border: 1px dashed gray;
     border-radius: 15px;
     text-align: left;
     padding: 0 10px;
+    margin: 10px 20px;
     box-sizing: border-box;
-    background-color: white;
+    background-color: lightgrey;
 }
 
 input {
@@ -24,14 +33,16 @@ p span {
     font-weight: bold;
 }
 
-@media(min-width: 800px){
+@media(min-width: 900px){
     .Data{
-        padding: 0 20vh;
+        width: 90%;
+    }
+    .Profile {
+        grid-template-columns: 30% 70%;
     }
 }
 
 .Profile button {
-    margin-left: 5px;
     border-radius: 10px;
     padding: 5px 15px;
     background-color: brown;

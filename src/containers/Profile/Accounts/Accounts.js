@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Account from '../../../components/Account/Account';
 import classes from './Accounts.css';
 import { connect } from 'react-redux';
@@ -31,12 +31,14 @@ class Accounts extends Component {
         }
         let accounts = <Spinner />
         if(this.props.accounts){
-            accounts = <ul hidden={!this.state.showAccounts} className={classes.List}>
-            Accounts ({this.props.accounts.length})
-            {
-                this.props.accounts.map(account => <Account account={account} key={account.id}/>)
-            }
-        </ul>
+            accounts = 
+            <Fragment>
+                <ul hidden={!this.state.showAccounts} className={classes.List}>
+                {
+                    this.props.accounts.map(account => <Account account={account} key={account.id}/>)
+                }
+                </ul>
+            </Fragment>
         }
         return (
             <div className={classes.Accounts}>
