@@ -13,5 +13,6 @@ export {
     addSpending,
     fetchCategories,
     fetchSpendings, 
-    updateData
+    updateData,
+    setColumns
 } from './spendings';

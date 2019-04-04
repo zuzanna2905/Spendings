@@ -9,6 +9,7 @@ import queryString from 'query-string';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import * as actions from '../../store/actions/index';
+import AddingSpending from './AddingSpending/AddingSpending';
 
 class Spendings extends Component {
     state = {
@@ -75,6 +76,7 @@ class Spendings extends Component {
             end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
             account : this.state.paramsInputs.account.value
         });
+        this.props.setColumns();
         this.props.fetchCategories();
         this.props.fetchSpendings(query);
     }
@@ -96,26 +98,26 @@ class Spendings extends Component {
         }
         let paramsSelecting = null;
         if(this.state.showParamsSelecting){
-            paramsSelecting = 
-            <SelectData 
-                paramsInputs={this.state.paramsInputs}
-                inputHandler={this.inputHandler}/>
+            // paramsSelecting = 
+            // <SelectData 
+            //     paramsInputs={this.state.paramsInputs}
+            //     inputHandler={this.inputHandler}/>
         }
 
         return (
             <div className={classes.Spendings}>
-                <button className={classes.Button} onClick={this.showAddingHandler}>ADD SPENDING</button>
+                <Table/>
                 <button className={classes.Button} onClick={this.showSelectingHandler}>FILTER SPENDINGS</button>
                 {paramsSelecting}            
                 {newSpendings}
                 <nav className={classes.Navigation}>
-                    <NavLink className={classes.Button} to={this.props.match.url + '/table'}> Spending Table</NavLink>
-                    <NavLink className={classes.Button} to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
-                </nav>    
-                <Route path={this.props.match.path + '/table'} 
-                component={Table}/>
+                    <NavLink className={classes.Button} to={this.props.match.url + '/new'}>New Spending</NavLink>
+                    <NavLink className={classes.Button} to={this.props.match.url + '/charts'}>Spending Charts</NavLink>
+                </nav>
                 <Route path={this.props.match.path + '/charts'} 
                 component={Charts}/>
+                <Route path={this.props.match.path + '/new'} 
+                component={AddingSpending}/>
             </div>
         );
     }
@@ -125,7 +127,8 @@ const mapDispatchToProps = dispatch => {
     return {
         setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value)),
         fetchCategories: () => dispatch(actions.fetchCategories()),
-        fetchSpendings: (query) => dispatch(actions.fetchSpendings(query))
+        fetchSpendings: (query) => dispatch(actions.fetchSpendings(query)),
+        setColumns: () => dispatch(actions.setColumns())
     }
 }
 

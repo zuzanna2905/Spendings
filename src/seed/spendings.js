@@ -13,11 +13,11 @@ export const spendings = [
 ];
 
 export const columns = [
-    { key: 'name', name: 'Name', editable:true,resizable: true, sortable:true, type:'string' },
-    { key: 'category', name: 'Category' , editable:true, resizable: true},
-    { key: 'value', name: 'Value' , editable:true,resizable: true, sortable:true, type:'number'},
-    { key: 'date', name: 'Date', editable:true,resizable: true},
-    { key: 'account', name: 'Account', editable:true,resizable: true}
+    { key: 'name', name: 'Name', editable:true,resizable: true, sortable:true, type:'string', filterable: true },
+    { key: 'category', name: 'Category' , editable:true, resizable: true, filterable: true},
+    { key: 'value', name: 'Value' , editable:true,resizable: true, sortable:true, type:'number', filterable: true},
+    { key: 'date', name: 'Date', editable:true,resizable: true, filterable: true},
+    { key: 'account', name: 'Account', editable:true,resizable: true, filterable: true}
 ];
 
 export const categories = [

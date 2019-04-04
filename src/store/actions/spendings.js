@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 const spend = 'http://localhost:3001/spendings';
 const cat = 'http://localhost:3001/categories';
+const col = 'http://localhost:3001/columns';
 
 export const setParamValue = (id, value) => {
     return {
@@ -70,8 +71,6 @@ export const fetchSpendings = (query) => {
         })
         .then(response => response.json())
         .then(spendings=> {
-            const columns = Object.keys(spendings[0]).map(s =>  s)
-            dispatch(setColumns(columns))
             dispatch(fetchSpendingsSuccess(spendings));
         })
         .catch(err => {
@@ -90,7 +89,7 @@ export const fetchCategories = () => {
         .then(response => response.json())
         .then(cats => {
             dispatch(fetchCategoriesSuccess(cats))
-        })        
+        })
         .catch(err => {
             dispatch(fetchCategoriesFail(err))
         })
@@ -157,9 +156,38 @@ export const deleteSpendingFail = () => {
     }
 }
 
-export const setColumns = (columns) =>{
+export const getColumnsStart = () => {
+    return {
+        type: actionTypes.GET_COLUMNS_START
+    }
+}
+
+export const getColumnsSuccess = (columns) => {
     return {
         type: actionTypes.GET_COLUMNS_SUCCESS,
         columns: columns
+    }
+}
+
+export const getColumnsFail = () => {
+    return {
+        type: actionTypes.GET_COLUMNS_FAIL
+    }
+}
+
+export const setColumns = () =>{
+    return dispatch => {
+        dispatch(getColumnsStart());
+        fetch(col, {
+            method: 'get',
+            headers: {'Content-Type' : 'application/json'}
+        })
+        .then(response => response.json())
+        .then(cols => {
+            dispatch(getColumnsSuccess(cols))
+        })        
+        .catch(err => {
+            dispatch(getColumnsFail(err))
+        })
     }
 }
