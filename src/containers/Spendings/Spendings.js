@@ -69,7 +69,7 @@ class Spendings extends Component {
         this.setState({showParamsSelecting: !this.state.showParamsSelecting, showNewAdding: false})
     }
 
-    componentDidMount () {
+    componentWillMount () {
         const query = '?' + queryString.stringify({
             start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
             end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
@@ -109,8 +109,8 @@ class Spendings extends Component {
                 {paramsSelecting}            
                 {newSpendings}
                 <nav className={classes.Navigation}>
-                    <NavLink to={this.props.match.url + '/table'}> Spending Table</NavLink>
-                    <NavLink to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
+                    <NavLink className={classes.Button} to={this.props.match.url + '/table'}> Spending Table</NavLink>
+                    <NavLink className={classes.Button} to={this.props.match.url + '/charts'}> Spending Charts</NavLink>
                 </nav>    
                 <Route path={this.props.match.path + '/table'} 
                 component={Table}/>
