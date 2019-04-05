@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDataGrid from "react-data-grid";
-import { Editors, Data, Toolbar } from "react-data-grid-addons";
+import { Data, Toolbar } from "react-data-grid-addons";
 import classes from './Table.css';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
-const { DropDownEditor } = Editors;
 
 const selectors = Data.Selectors;
 
@@ -12,16 +11,19 @@ class Table extends React.Component {
     state = {
         filters: null,
     }
-    CategoryTypeEditor = () => {
-        return <DropDownEditor options={this.props.cats} />
-    }
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-        const spendings = this.props.spendings.slice();
-        for (let i = fromRow; i <= toRow; i++) {
-            spendings[i] = { ...spendings[i], ...updated };
+        if('category' in updated){
+            updated = {
+                category: this.props.cats[this.props.cats.findIndex(c=> c.name === updated.category)].id
+            }
         }
-        this.props.updateData(spendings);
+        let newSpendings = this.props.spendings;
+        const rows = newSpendings.slice();
+        for (let i = fromRow; i <= toRow; i++) {
+            rows[i] = { ...rows[i], ...updated};
+        }
+        this.props.updateData(rows);
     };
     
     sortRows = (initialRows, sortColumn, sortDirection) => {
@@ -109,7 +111,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: () => dispatch(actions.updateData())
+        updateData: (spendings) => dispatch(actions.updateData(spendings))
     }
 }
 

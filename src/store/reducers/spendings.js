@@ -1,5 +1,7 @@
+import React from 'react';
 import * as actions from '../actions/actionTypes';
-import { Filters} from "react-data-grid-addons";
+import { Filters, Editors} from "react-data-grid-addons";
+const { DropDownEditor } = Editors;
 
 const initialState = {
     categories : null,
@@ -23,7 +25,7 @@ const setFilter = (column) => {
             filter = Filters.NumericFilter;
             break;
         case 'character varying':
-            filter = Filters.SingleSelectFilter;
+            filter = Filters.MultiSelectFilter;
             break;
         default:
             filter = Filters.NumericFilter
@@ -33,6 +35,13 @@ const setFilter = (column) => {
 }
 
 const reducer = (state= initialState, action) => {
+    const options = state.categories ? state.categories.map(c => {
+        return {
+            id: c.id,
+            value: c.name
+        }}) : null;
+    console.log(options)
+    const CategoryTypeEditor = <DropDownEditor options={options} />
     switch(action.type){
         case actions.SET_PARAM_VALUE:
             let inputForm = state.filterParams;
@@ -81,7 +90,6 @@ const reducer = (state= initialState, action) => {
                 loading: action.loading
             }
         case actions.GET_COLUMNS_SUCCESS:
-            console.log(action.columns)
             const newColumns = action.columns.map(c => {
                 return {
                 key: c.column_name,
@@ -90,12 +98,18 @@ const reducer = (state= initialState, action) => {
                 resizable: true,
                 sortable: true,
                 filterable: true,
-                filterRenderer: setFilter(c)}
+                editor: c.column_name === 'category' ? CategoryTypeEditor : null,
+                filterRenderer: c.column_name === 'category' ? Filters.SingleSelectFilter : setFilter(c)}
             })
-            console.log(newColumns)
             return {
                 ...state,
                 columns: newColumns
+            }
+        case actions.UPDATE_DATA :
+            console.log(action)
+            return {
+                ...state,
+                spendings: action.spendings
             }
         default:
             return state;

@@ -114,9 +114,10 @@ export const updateDataFail = () => {
     }
 }
 
-export const updateData = () => {
-    return dispatch =>{
-        dispatch(updateDataStart());
+export const updateData = (spendings) => {
+    return {
+        type: actionTypes.UPDATE_DATA,
+        spendings: spendings
     }
 }
 

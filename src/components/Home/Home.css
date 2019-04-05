@@ -1,4 +1,4 @@
-.Home{
+/* .Home{
     height: 90vh;
     text-align: center;
     vertical-align: middle;
@@ -13,4 +13,10 @@
         margin-top: 0;
         background-size: 110vw 100vh;
     }
+} */
+
+
+.Home {
+    text-align: center;
+    margin: 80px;
 }
