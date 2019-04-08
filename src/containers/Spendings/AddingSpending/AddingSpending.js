@@ -3,10 +3,25 @@ import Form from '../../../components/UI/Form/Form';
 import classes from './AddingSpending.css';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
+import queryString from 'query-string';
+import {Redirect} from 'react-router';
 
 class Spending extends Component {
     state = {
         formInputs : {
+            name: {
+                type: 'input', 
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Name'
+                },
+                value: '',
+                validation: {
+                    required: true
+                },
+                valid: true,
+                touched: false
+            },
             value : {
                 type: 'input',                 
                 elementConfig: {
@@ -85,6 +100,7 @@ class Spending extends Component {
     }
 
     componentWillMount () {
+        this.props.addingInit();
         // const categories = this.props.categories;
         // this.setState({
         //     formInputs: {
@@ -94,24 +110,6 @@ class Spending extends Component {
         //     }
         // }}})
         // console.log(this.state.formInputs)
-    }
-
-    spendingSubmitHandler = (e) => {
-        // this.setState({loading: true})
-        // const formData = {};
-        // for(let elem in this.state.formInputs){
-        //     formData[elem] = this.state.formInputs[elem].value;
-        // }
-        // fetch('http://localhost:3001/spendings', {
-        //     method: 'post',
-        //     headers: {'Content-Type' : 'application/json'},
-        // })
-        // .then(res=> {
-        //     this.setState({loading: false});
-        //     console.log(this.props);
-        //     this.props.history.push('/')
-        // })   
-        // .catch(r => { this.setState({loading: false})})
     }
 
     inputHandler = (inputID, e) => {
@@ -136,7 +134,6 @@ class Spending extends Component {
         return isValid;
     }
 
-
     render() {
         const formElementsArray = [];
         for (let key in this.state.formInputs){
@@ -145,18 +142,24 @@ class Spending extends Component {
                 config: this.state.formInputs[key]
             })
         }
-        return (
+        if(this.props.added) {
+            return <Redirect to='/spendings' />
+        }
+        return (    
             <div className={classes.Spending}>
                 <h1>Add New Spending</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={() => this.props.spendingSubmitHandler({
-                            name: this.state.formInputs.description.value,
+                    clicked={() => this.props.spendingSubmitHandler(
+                        queryString.stringify({          
+                            name: this.state.formInputs.name.value,
                             category: 1,//this.state.formInputs.category.value,
                             value: +this.state.formInputs.value.value,
                             date: this.state.formInputs.date.value,
-                            account: 1 //this.state.formInputs.account.value
-                    })} 
+                            account: 1, //this.state.formInputs.account.value,
+                            description: this.state.formInputs.description.value
+                        })
+                    )} 
                     inputHandler={this.inputHandler}
                     actionName='ADD'
                 />
@@ -167,13 +170,15 @@ class Spending extends Component {
 
 const mapStateToProps = state => {
     return {
-        categories: state.spend.categories
+        categories: state.spend.categories,
+        added: state.spend.added
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        spendingSubmitHandler: (spending) => dispatch(actions.addSpending(spending))
+        spendingSubmitHandler: (spending) => dispatch(actions.addSpending(spending)),
+        addingInit: () => dispatch(actions.addingInit())
     }
 }
 

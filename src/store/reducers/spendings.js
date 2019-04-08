@@ -12,7 +12,8 @@ const initialState = {
         endDate: '',
         account: ''
     },
-    loading: false
+    loading: false,
+    added: false
 }
 
 const setFilter = (column) => {
@@ -40,7 +41,6 @@ const reducer = (state= initialState, action) => {
             id: c.id,
             value: c.name
         }}) : null;
-    console.log(options)
     const CategoryTypeEditor = <DropDownEditor options={options} />
     switch(action.type){
         case actions.SET_PARAM_VALUE:
@@ -52,10 +52,21 @@ const reducer = (state= initialState, action) => {
                 ...state,
                 filterParams: inputForm
             }
-        case actions.ADD_SPENDING:
+        case actions.ADD_SPENDING_SUCCESS:
             return {
                 ...state,
-                spendings: state.spendings.concat(action.spending)
+                spendings: state.spendings.concat(action.spending),
+                added: true
+            }
+        case actions.ADD_SPENDING_START:
+            return {
+                ...state,
+                added: true
+            }
+        case actions.ADD_SPENDING_FAIL: 
+            return {
+                ...state,
+                added: true
             }
         case actions.FECTH_SPENDINGS_FAIL:
             return {
@@ -105,11 +116,15 @@ const reducer = (state= initialState, action) => {
                 ...state,
                 columns: newColumns
             }
-        case actions.UPDATE_DATA :
-            console.log(action)
+        case actions.UPDATE_DATA:
             return {
                 ...state,
                 spendings: action.spendings
+            }
+        case actions.ADDING_INIT:
+            return {
+                ...state,
+                added: false
             }
         default:
             return state;

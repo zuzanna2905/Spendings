@@ -3,6 +3,7 @@ import XYPlot from '../../../components/XYPlot/XYPlot';
 import RadialChart from '../../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
 import { connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 class Charts extends Component {
     getData = (array) => {
@@ -78,8 +79,8 @@ class Charts extends Component {
 
     render() {
         const {spendings} = this.props;
-        let charts = <h3>Failed to load data!</h3>
-        if(spendings[0]){
+        let charts = <Redirect to ='/spendings' />;
+        if(spendings){
             charts = <Fragment>
                 <RadialChart 
                 data={this.RadialCategory(spendings)} 

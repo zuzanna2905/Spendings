@@ -12,9 +12,19 @@ export const setParamValue = (id, value) => {
 }
 
 export const addSpending = (spending) => {
-    return {
-        type: actionTypes.ADD_SPENDING,
-        spending: spending
+    return dispatch => {
+        dispatch(addSpendingStart());
+        fetch('http://localhost:3001/spendings?' + spending, {
+            method: 'post',
+            headers: {'Content-Type' : 'application/json'},
+        })
+        .then(response => response.json())
+        .then(spendings=> {
+            dispatch(addSpendingSuccess(spending));
+        })
+        .catch(err => {
+            dispatch(addSpendingFail(err))
+        })
     }
 }
 
@@ -127,9 +137,10 @@ export const addSpendingStart = () => {
     }
 }
 
-export const addSpendingSuccess = () => {
+export const addSpendingSuccess = (spending) => {
     return {
-        type: actionTypes.ADD_SPENDING_SUCCESS
+        type: actionTypes.ADD_SPENDING_SUCCESS,
+        spending: spending
     }
 }
 
@@ -190,5 +201,11 @@ export const setColumns = () =>{
         .catch(err => {
             dispatch(getColumnsFail(err))
         })
+    }
+}
+
+export const addingInit = () => {
+    return {
+        type: actionTypes.ADDING_INIT
     }
 }

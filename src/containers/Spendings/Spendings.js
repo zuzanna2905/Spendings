@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SelectData from '../../components/SelectData/SelectData';
+//import SelectData from '../../components/SelectData/SelectData';
 import Table from './Table/Table';
 import Charts from './Charts/Charts';
 import AddSpending from './AddingSpending/AddingSpending';
@@ -106,6 +106,8 @@ class Spendings extends Component {
 
         return (
             <div className={classes.Spendings}>
+                <h1>Here are your spendings</h1>
+                <h3>Filter spending rows</h3>
                 <Table/>
                 <button className={classes.Button} onClick={this.showSelectingHandler}>FILTER SPENDINGS</button>
                 {paramsSelecting}            
@@ -123,6 +125,12 @@ class Spendings extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        added: state.spend.added
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value)),
@@ -132,4 +140,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Spendings);
+export default connect(mapStateToProps, mapDispatchToProps)(Spendings);
