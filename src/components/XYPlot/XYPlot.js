@@ -7,7 +7,8 @@ import {  XYPlot,
 } from 'react-vis';
 
 const xyPlot = (props) => {
-  return (
+    console.log(props)
+    return (
     <XYPlot 
         xType="ordinal"
         margin={{bottom: 80, left: 80}}

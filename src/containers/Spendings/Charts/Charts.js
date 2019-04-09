@@ -36,12 +36,13 @@ class Charts extends Component {
     }
 
     RadialCategory = (array) => {
-        const values = this.props.cats.map(c => {
+        const categories = this.props.cats.map(c => {
                 return {
                 label: c.name,
                 angle: array.filter(a => a.category === c.id)
                 .reduce(this.sumCat,0)
             }})
+        const values = categories.filter(c => c.angle !== 0);
         return values;
     }
     
