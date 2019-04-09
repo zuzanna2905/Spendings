@@ -79,6 +79,7 @@ class Spendings extends Component {
         this.props.setColumns();
         this.props.fetchCategories();
         this.props.fetchSpendings(query);
+        this.props.fetchAccounts();
     }
 
     inputHandler = (inputID, e) => {
@@ -136,7 +137,8 @@ const mapDispatchToProps = dispatch => {
         setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value)),
         fetchCategories: () => dispatch(actions.fetchCategories()),
         fetchSpendings: (query) => dispatch(actions.fetchSpendings(query)),
-        setColumns: () => dispatch(actions.setColumns())
+        setColumns: () => dispatch(actions.setColumns()),
+        fetchAccounts: () => dispatch(actions.fetchAccounts())
     }
 }
 

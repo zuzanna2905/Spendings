@@ -3,7 +3,6 @@ import Form from '../../../components/UI/Form/Form';
 import classes from './AddingSpending.css';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
-import queryString from 'query-string';
 import {Redirect} from 'react-router';
 
 class Spending extends Component {
@@ -37,14 +36,9 @@ class Spending extends Component {
             },
             category: {
                 type: 'select', 
-                elementConfig: {
-                    options: [
-                    {value: 'food'},
-                    {value: 'home'},
-                    {value: 'clothes'}
-                    ]
-                },
+                elementConfig: {},
                 value: '',
+                id: 1,
                 validation: {
                     required: true
                 },
@@ -55,7 +49,7 @@ class Spending extends Component {
                 type: 'input', 
                 elementConfig: {
                     type: 'date',
-                    placeholder: 'Date'
+                    placeholder: 'Date',
                 },
                 value: '',
                 validation: {
@@ -66,15 +60,9 @@ class Spending extends Component {
             },
             account: {
                 type: 'select', 
-                elementConfig: {
-                    options: [
-                        {value: 'Zuzanna Konto'},
-                        {value: 'Piotr Konto'},
-                        {value: 'Zuzanna 2'}, 
-                        {value: 'Piotr 2'}
-                    ]
-                },
+                elementConfig: {},
                 value: '',
+                id: 1,
                 validation: {
                     required: true
                 },
@@ -101,23 +89,67 @@ class Spending extends Component {
 
     componentWillMount () {
         this.props.addingInit();
-        // const categories = this.props.categories;
-        // this.setState({
-        //     formInputs: {
-        //     category : {
-        //         elementConfig : {
-        //             options: categories
-        //     }
-        // }}})
-        // console.log(this.state.formInputs)
+    }
+
+    componentDidMount = () => {
+        const categories = this.props.categories ? this.props.categories.map(c => {
+            return {
+                id: c.id,
+                value: c.name
+            }}) : null;
+        const accounts = this.props.accounts ? this.props.accounts.map(a => {
+            return {
+                id: a.id,
+                value: a.name
+            }
+        }) : null;
+        this.setState(prevState => ({
+            ...prevState,
+            formInputs : {
+                ...prevState.formInputs,
+                category: { 
+                    ...prevState.formInputs.category,
+                    elementConfig : {
+                        ...prevState.formInputs.category.elementConfig,
+                        options: categories
+                    }
+                },
+                account: {
+                    ...prevState.formInputs.account,
+                    elementConfig : {
+                        ...prevState.formInputs.account.elementConfig,
+                        options: accounts
+                    }
+                }
+            }
+        }))
     }
 
     inputHandler = (inputID, e) => {
         let inputForm = { ...this.state.formInputs};
         let element = { ...inputForm[inputID]};
+        let option = null;
         element.value = e;
         element.valid = this.checkValidity(element.value, element.validation)
         element.touched = true;
+        switch(inputID){
+            case 'category':
+                option = element.elementConfig.options.filter( o => 
+                    {
+                        return o.value === e
+                    })
+                element.id = option[0].id;
+                break;
+            case 'account':
+                option = element.elementConfig.options.filter( o => 
+                    {
+                        return o.value === e
+                    })
+                element.id = option[0].id;
+                break;
+            default:
+                break;
+        }
         inputForm[inputID] = element;
         let formIsValid = true;
         for(let i in inputForm){
@@ -150,16 +182,15 @@ class Spending extends Component {
                 <h1>Add New Spending</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={() => this.props.spendingSubmitHandler(
-                        queryString.stringify({          
+                    clicked={() => this.props.spendingSubmitHandler({ 
                             name: this.state.formInputs.name.value,
-                            category: 1,//this.state.formInputs.category.value,
+                            category: this.state.formInputs.category.id,
                             value: +this.state.formInputs.value.value,
                             date: this.state.formInputs.date.value,
-                            account: 1, //this.state.formInputs.account.value,
+                            account: this.state.formInputs.account.id,
                             description: this.state.formInputs.description.value
                         })
-                    )} 
+                    } 
                     inputHandler={this.inputHandler}
                     actionName='ADD'
                 />
@@ -171,7 +202,8 @@ class Spending extends Component {
 const mapStateToProps = state => {
     return {
         categories: state.spend.categories,
-        added: state.spend.added
+        added: state.spend.added,
+        accounts: state.prof.accounts
     }
 }
 

@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import queryString from 'query-string';
 const spend = 'http://localhost:3001/spendings';
 const cat = 'http://localhost:3001/categories';
 const col = 'http://localhost:3001/columns';
@@ -14,7 +15,15 @@ export const setParamValue = (id, value) => {
 export const addSpending = (spending) => {
     return dispatch => {
         dispatch(addSpendingStart());
-        fetch('http://localhost:3001/spendings?' + spending, {
+        const query = queryString.stringify({          
+            name: spending.name,
+            category: spending.category,
+            value: spending.value,
+            account: spending.account,
+            description: spending.description,
+            date:  new Date(spending.date).toISOString()
+        })
+        fetch('http://localhost:3001/spendings?' + query, {
             method: 'post',
             headers: {'Content-Type' : 'application/json'},
         })

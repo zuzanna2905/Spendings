@@ -64,13 +64,14 @@ class Table extends React.Component {
     render() {
         const _spendings = this.props.spendings;
         const cats = this.props.cats;
-      //  const acc = this.props.accounts;
+        const acc = this.props.accounts;
         let table = <h3>Failed to load data</h3>;
         if(_spendings && this.props.columns){
             const spendings = _spendings.map(s => {
                 return {
                     ...s, 
-                    category: cats[cats.findIndex(c=> c.id === s.category)].name
+                    category: cats[cats.findIndex(c=> c.id === s.category)].name,
+                    account: acc[acc.findIndex(a => a.id === s.account)].name
                 } 
             });
             const updatedDate = Object.keys(spendings).map(key => {
