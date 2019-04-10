@@ -44,9 +44,37 @@ export const addAccountFail = () => {
 }
 
 export const removeAccount = (accountId) =>{
+    return dispatch => {
+        dispatch(removeAccountStart());
+        fetch('http://localhost:3001/accounts/' + accountId, {
+            method: 'delete',
+            headers: {'Content-Type' : 'application/json'},
+        })
+        .then(response => response.json())
+        .then(spendings=> {
+            dispatch(removeAccountSuccess(accountId));
+        })
+        .catch(err => {
+            dispatch(removeAccountFail(err))
+        })
+    }
+}
+
+export const removeAccountStart = () => {
     return {
-        type: actionTypes.REMOVE_ACCOUNT,
+        type: actionTypes.REMOVE_ACCOUNT_START
+    }
+}
+
+export const removeAccountSuccess = (accountId) => {
+    return {
+        type: actionTypes.REMOVE_ACCOUNT_SUCCESS, 
         accountId: accountId
+    }
+}
+export const removeAccountFail = () => {
+    return {
+        type: actionTypes.REMOVE_ACCOUNT_FAIL
     }
 }
 
@@ -57,10 +85,42 @@ export const setAccount = (value) => {
     }
 }
 
-export const editAccount = (accountId) => {
+export const editAccount = (id, name) => {
+    return dispatch => {
+        dispatch(editAccountStart());
+        const query = queryString.stringify({          
+            name: name
+        })
+        fetch('http://localhost:3001/accounts/' + id + '?' + query, {
+            method: 'put',
+            headers: {'Content-Type' : 'application/json'},
+        })
+        .then(response => response.json())
+        .then(spendings=> {
+            dispatch(editAccountSuccess(id));
+        })
+        .catch(err => {
+            dispatch(editAccountFail(err))
+        })
+    }
+}
+
+export const editAccountStart = () => {
     return {
-        type: actionTypes.EDIT_ACCOUNT,
+        type: actionTypes.EDIT_ACCOUNT_START
+    }
+}
+
+export const editAccountSuccess = (accountId) => {
+    return {
+        type: actionTypes.EDIT_ACCOUNT_SUCCESS,
         accountId: accountId
+    }
+}
+
+export const editAccountFail = () => {
+    return {
+        type: actionTypes.EDIT_ACCOUNT_FAIL
     }
 }
 

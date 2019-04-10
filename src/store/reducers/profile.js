@@ -26,13 +26,13 @@ const reducer = (state = initialState, action) => {
                 accounts : state.accounts.concat({name: state.newAccount, id: (Math.random() * 1000).toFixed(0), edit: false}),
                 newAccount: ''
             }
-        case actions.REMOVE_ACCOUNT:
+        case actions.REMOVE_ACCOUNT_SUCCESS:
             newAccounts = state.accounts.filter(account => account.id !== action.accountId)
             return {
                 ...state, 
                 accounts: newAccounts
             }
-        case actions.EDIT_ACCOUNT:
+        case actions.EDIT_ACCOUNT_SUCCESS:
             newAccounts = [...state.accounts];
             index = newAccounts.findIndex((elem)=> elem.id === action.accountId);
             newAccounts[index] =  {id: action.accountId, name: state.newValue, edit: false};
@@ -70,7 +70,6 @@ const reducer = (state = initialState, action) => {
                 loading: action.loading
             }
         case actions.FETCH_ACCOUNTS_SUCCESS:
-        console.log(action.accounts)
             return {
                 ...state,
                 loading: action.loading,
