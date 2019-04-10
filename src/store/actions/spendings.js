@@ -117,26 +117,45 @@ export const fetchCategories = () => {
 
 export const updateDataStart = () => {
     return {
-        type: actionTypes.UPDATE_CELL_START
+        type: actionTypes.UPDATE_DATA_START
     }
 }
 
-export const updateDataSuccess = () => {
+export const updateDataSuccess = (spendings) => {
     return {
-        type: actionTypes.UPDATE_CELL_SUCCESS
+        type: actionTypes.UPDATE_DATA_SUCCESS,
+        spendings: spendings
     }
 }
 
 export const updateDataFail = () => {
     return {
-        type: actionTypes.UPDATE_CELL_FAIL
+        type: actionTypes.UPDATE_DATA_FAIL
     }
 }
 
-export const updateData = (spendings) => {
-    return {
-        type: actionTypes.UPDATE_DATA,
-        spendings: spendings
+export const updateData = (spendings, row) => {
+    return dispatch => {
+        dispatch(updateDataStart());
+        const query = queryString.stringify({          
+            name:row.name, 
+            category:row.category, 
+            value:row.value, 
+            account:row.account, 
+            description:row.description,
+            date: new Date(row.date).toISOString()
+        })
+        fetch('http://localhost:3001/spendings/' + row.id + '?' + query, {
+            method: 'put',
+            headers: {'Content-Type' : 'application/json'},
+        })
+        .then(response => response.json())
+        .then(x => {
+            dispatch(updateDataSuccess(spendings));
+        })
+        .catch(err => {
+            dispatch(updateDataFail(err))
+        })
     }
 }
 

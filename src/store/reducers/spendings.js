@@ -1,7 +1,5 @@
-import React from 'react';
 import * as actions from '../actions/actionTypes';
-import { Filters, Editors} from "react-data-grid-addons";
-const { DropDownEditor } = Editors;
+import { Filters } from "react-data-grid-addons";
 
 const initialState = {
     categories : null,
@@ -32,16 +30,20 @@ const setFilter = (column) => {
             filter = Filters.NumericFilter
             break;
     }
+    switch(column.column_name){
+        case 'category':
+            filter = Filters.SingleSelectFilter;
+            break;
+        case 'account': 
+            filter = Filters.SingleSelectFilter;
+            break;
+        default:
+            break;
+    }
     return filter;
 }
 
-const reducer = (state= initialState, action) => {
-    const options = state.categories ? state.categories.map(c => {
-        return {
-            id: c.id,
-            value: c.name
-        }}) : null;
-    const CategoryTypeEditor = <DropDownEditor options={options} />
+const reducer = (state = initialState, action) => {
     switch(action.type){
         case actions.SET_PARAM_VALUE:
             let inputForm = state.filterParams;
@@ -107,16 +109,14 @@ const reducer = (state= initialState, action) => {
                 name: c.column_name.charAt(0).toUpperCase() + c.column_name.slice(1),
                 editable: true,
                 resizable: true,
-                sortable: true,
                 filterable: true,
-                editor: c.column_name === 'category' ? CategoryTypeEditor : null,
-                filterRenderer: c.column_name === 'category' ? Filters.SingleSelectFilter : setFilter(c)}
-            })
+                filterRenderer: setFilter(c)
+            }})
             return {
                 ...state,
                 columns: newColumns
             }
-        case actions.UPDATE_DATA:
+        case actions.UPDATE_DATA_SUCCESS:
             return {
                 ...state,
                 spendings: action.spendings
