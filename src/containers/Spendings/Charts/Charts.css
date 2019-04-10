@@ -7,6 +7,10 @@
     flex-flow: column;
 }
 
+.Filter {
+    margin: 20px auto;
+}
+
 @media(min-width: 900px){
     .Charts{
         flex-flow: row;

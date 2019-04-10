@@ -4,8 +4,52 @@ import RadialChart from '../../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
 import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
+import moment from 'moment';
+import Select from '../../../components/UI/Select/Select';
 
 class Charts extends Component {
+    state = {
+        filtered : {
+            id: 'Filter spendings by date ', 
+            value: 'Month',
+            options: [
+                {id: 1, value: 'Day'},
+                {id: 2, value: 'Week'},
+                {id: 3, value: 'Month'},
+                {id: 4, value: 'Year'}
+            ]
+        }
+        //todo: account filters
+    }
+
+    showData = () => {
+        const filteredData = this.props.spendings;
+        switch(this.state.filtered.value) {
+            case 'Day':
+                return filteredData.filter(f => {
+                    let today = moment().day(1).format('YYYY-MM-DD');
+                    return f.date >= today
+                })
+            case 'Week':
+                return filteredData.filter(f => {
+                    let week = moment().day(-7).format('YYYY-MM-DD');
+                    return f.date >= week
+                })
+            case 'Month':
+                return filteredData.filter(f => {
+                    let month = moment().day(-30).format('YYYY-MM-DD');
+                    return f.date >= month
+                })
+            case 'Year':
+                return filteredData.filter(f => {
+                    let year = moment().day(-365).format('YYYY-MM-DD');
+                    return f.date >= year
+                })
+            default:
+                return filteredData
+        }
+    }
+
     getData = (array) => {
         const data = array.map((a, i) => {
             return {
@@ -78,26 +122,43 @@ class Charts extends Component {
         return array.length;
     }
 
+    inputHandler = (e) => {
+        let filtered = { ...this.state.filtered};
+        filtered.value = e;
+        this.setState({filtered: filtered})
+    }
+
     render() {
         const {spendings} = this.props;
+        const filtered = {...this.state.filtered};
         let charts = <Redirect to ='/spendings' />;
         if(spendings){
             charts = <Fragment>
-                <RadialChart 
-                data={this.RadialCategory(spendings)} 
-                title={"[Last Month Spendings]"}
-                />
-                <XYPlot 
-                    max={this.getMaxCat(spendings)} 
-                    data={this.sumByCategory(spendings)}
-                    chartLabelY={"[Categories]"}
-                    chartLabelX={"[Values]"}
-                    chartTitle={"Last Month Spendings"}
-                />
+                <div className={classes.Filter}>
+                    <Select
+                        value={filtered.value} 
+                        name={filtered.id} 
+                        options={filtered.options}
+                        changed={(e) => this.inputHandler(e.target.value)}
+                    />
+                </div>
+                <div className={classes.Charts}>
+                    <RadialChart 
+                    data={this.RadialCategory(this.showData(spendings))} 
+                    title={`[Last ${filtered.value} Spendings]`}
+                    />
+                    <XYPlot 
+                        max={this.getMaxCat(this.showData(spendings))} 
+                        data={this.sumByCategory(this.showData(spendings))}
+                        chartLabelY={"[Categories]"}
+                        chartLabelX={"[Values]"}
+                        chartTitle={`[Last ${filtered.value} Spendings]`}
+                    />
+                </div>
             </Fragment>
         }
         return (
-            <div className={classes.Charts}>
+            <div >
                 {charts}
             </div>
         );

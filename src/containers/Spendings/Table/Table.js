@@ -66,7 +66,7 @@ class Table extends React.Component {
         const cats = this.props.cats;
         const acc = this.props.accounts;
         let table = <h3>Failed to load data</h3>;
-        if(_spendings && this.props.columns){
+        if(_spendings && cats && acc && this.props.columns){
             const spendings = _spendings.map(s => {
                 return {
                     ...s, 

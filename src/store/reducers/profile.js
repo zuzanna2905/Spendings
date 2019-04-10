@@ -20,7 +20,7 @@ const reducer = (state = initialState, action) => {
     let newAccounts = null;
     let index = null;
     switch(action.type){
-        case actions.ADD_ACOUNT:
+        case actions.ADD_ACCOUNT_SUCCESS:
             return {
                 ...state, 
                 accounts : state.accounts.concat({name: state.newAccount, id: (Math.random() * 1000).toFixed(0), edit: false}),
