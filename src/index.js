@@ -8,11 +8,13 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import profileReducer from './store/reducers/profile';
 import spendingsReducer from './store/reducers/spendings';
+import reportsReducer from './store/reducers/reports';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     prof: profileReducer,
-    spend: spendingsReducer
+    spend: spendingsReducer,
+    repo: reportsReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
