@@ -13,6 +13,7 @@ Soon: generating spendings reports
 
 
 Technologies
+
 The app is based on React/Redux, JavaScript, CSS3, HTML5, NodeJS
 Tests: not yet
 
