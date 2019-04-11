@@ -13,8 +13,8 @@ const radialChart = (props) => {
         margin={{bottom: 100}}
         showLabels={true}
         labelsRadiusMultiplier={0.95}
-        width={400}
-        height={500} 
+        width={450}
+        height={450} 
       >
         <ChartLabel
         text={props.title}
