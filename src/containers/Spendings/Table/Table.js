@@ -97,8 +97,8 @@ class Table extends React.Component {
           <div
             style={{ textAlign: "center", backgroundColor: "#ddd", padding: "100px" }}
           >
-            <img src={logo} alt={message} />
             <h3>{message}</h3>
+            <img src={logo} alt={message} />
           </div>
         );
     }

@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import * as classes from './Account.css';
 
 const account = (props) => {
     const account = props.account;
     let editAccount = '';
     if(account.edit){
         editAccount = 
-            <div>
+            <div className={classes.Edit}>
                 <p>New Name (min-length: 3)</p>
                 <input
                     name='newname'
@@ -21,7 +22,7 @@ const account = (props) => {
     return (
     <li>
         <p>{account.name}</p>
-        <button onClick={() => props.removeAccount(account.id)}>Delete</button>
+        <button disabled={true} onClick={() => props.removeAccount(account.id)}>Delete</button>
         <button onClick={() => props.showEditAccount(account.id)}>Edit</button>
             {editAccount}
         <button disabled={props.newValue.length < 3} hidden={!account.edit} onClick={() => props.editAccount(account.id, props.newValue)}>Set New Name</button>
@@ -31,7 +32,8 @@ const account = (props) => {
 
 const mapStateToProps = state => {
     return {
-        newValue: state.prof.newValue
+        newValue: state.prof.newValue,
+        spendings: state.spend.spendings
     }
 }
 

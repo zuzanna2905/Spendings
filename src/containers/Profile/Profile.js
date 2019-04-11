@@ -18,7 +18,7 @@ class Profile extends Component {
                     <div className={classes.Data}>
                         {
                             Object.keys(this.props.profile).map(v => {
-                                return <p><span>{v}: </span>{this.props.profile[v]}</p>
+                                return <p key = {v} ><span>{v}: </span>{this.props.profile[v]}</p>
                             })
                         }
                     </div>

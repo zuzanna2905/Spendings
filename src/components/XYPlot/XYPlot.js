@@ -7,7 +7,6 @@ import {  XYPlot,
 } from 'react-vis';
 
 const xyPlot = (props) => {
-    console.log(props)
     return (
     <XYPlot 
         xType="ordinal"

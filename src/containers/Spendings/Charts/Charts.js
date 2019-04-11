@@ -16,7 +16,8 @@ class Charts extends Component {
                 {id: 1, value: 'Day'},
                 {id: 2, value: 'Week'},
                 {id: 3, value: 'Month'},
-                {id: 4, value: 'Year'}
+                {id: 4, value: 'Year'},
+                {id: 5, value: 'All'}
             ]
         }
         //todo: account filters
@@ -27,7 +28,7 @@ class Charts extends Component {
         switch(this.state.filtered.value) {
             case 'Day':
                 return filteredData.filter(f => {
-                    let today = moment().day(1).format('YYYY-MM-DD');
+                    let today = moment().format('YYYY-MM-DD');
                     return f.date >= today
                 })
             case 'Week':
@@ -44,6 +45,10 @@ class Charts extends Component {
                 return filteredData.filter(f => {
                     let year = moment().day(-365).format('YYYY-MM-DD');
                     return f.date >= year
+                })
+            case 'All':
+                return filteredData.filter(f => {
+                    return filteredData
                 })
             default:
                 return filteredData

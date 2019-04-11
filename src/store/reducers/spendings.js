@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) => {
         case actions.ADD_SPENDING_SUCCESS:
             return {
                 ...state,
-                spendings: state.spendings.concat(action.spending),
+                spendings: state.spendings.concat(action.spending), //zmienić na push
                 added: true
             }
         case actions.ADD_SPENDING_START:

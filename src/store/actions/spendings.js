@@ -21,7 +21,7 @@ export const addSpending = (spending) => {
             value: spending.value,
             account: spending.account,
             description: spending.description,
-            date:  new Date(spending.date).toISOString()
+            date:   spending.date//new Date(spending.date).toISOString() // nie lubi na string?
         })
         fetch('http://localhost:3001/spendings?' + query, {
             method: 'post',

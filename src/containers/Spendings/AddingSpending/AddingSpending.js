@@ -18,7 +18,7 @@ class Spending extends Component {
                 validation: {
                     required: true
                 },
-                valid: true,
+                valid: false,
                 touched: false
             },
             value : {
@@ -42,7 +42,7 @@ class Spending extends Component {
                 validation: {
                     required: true
                 },
-                valid: true,
+                valid: false,
                 touched: false
             },
             date: {
@@ -79,7 +79,7 @@ class Spending extends Component {
                 validation: {
                     required: false
                 },
-                valid: true,
+                valid: false,
                 touched: false
             }
         },
@@ -177,12 +177,15 @@ class Spending extends Component {
         if(this.props.added) {
             return <Redirect to='/spendings' />
         }
+        if(!this.props.categories || !this.props.accounts){
+            return <Redirect to='/spendings' />
+        }
         return (    
             <div className={classes.Spending}>
                 <h1>Add New Spending</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={() => this.props.spendingSubmitHandler({ 
+                    clicked={() =>this.props.spendingSubmitHandler({ 
                             name: this.state.formInputs.name.value,
                             category: this.state.formInputs.category.id,
                             value: +this.state.formInputs.value.value,
@@ -190,9 +193,10 @@ class Spending extends Component {
                             account: this.state.formInputs.account.id,
                             description: this.state.formInputs.description.value
                         })
-                    } 
+                    }
                     inputHandler={this.inputHandler}
                     actionName='ADD'
+                    disabled={!this.state.formIsValid}
                 />
             </div>
         )

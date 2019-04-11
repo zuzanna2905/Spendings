@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import SelectData from '../../components/SelectData/SelectData';
+import SelectData from '../../components/SelectData/SelectData';
 import Table from './Table/Table';
 import Charts from './Charts/Charts';
 import AddSpending from './AddingSpending/AddingSpending';
@@ -20,7 +20,7 @@ class Spendings extends Component {
                 type: 'date',
                 placeholder: 'Start Date'
             },
-            value: moment().day(-30).format('YYYY-MM-DD'),
+            value: moment().day(-3000).format('YYYY-MM-DD'),
             validation: {
                 required: true
             },
@@ -59,11 +59,11 @@ class Spendings extends Component {
             }
         },
         showNewAdding: false,
-        showParamsSelecting: true
+        showParamsSelecting: false
     }
 
     showAddingHandler = () =>{
-        this.setState({showNewAdding: !this.state.showNewAdding, showParamsSelecting: false})
+        this.setState({showNewAdding: true, showParamsSelecting: false})
     }
 
     showSelectingHandler = () =>{
@@ -99,19 +99,19 @@ class Spendings extends Component {
         }
         let paramsSelecting = null;
         if(this.state.showParamsSelecting){
-            // paramsSelecting = 
-            // <SelectData 
-            //     paramsInputs={this.state.paramsInputs}
-            //     inputHandler={this.inputHandler}/>
+            paramsSelecting = 
+            <SelectData 
+                paramsInputs={this.state.paramsInputs}
+                inputHandler={this.inputHandler}/>
         }
 
         return (
             <div className={classes.Spendings}>
                 <h1>Here are your spendings</h1>
                 <h3>Filter spending rows</h3>
-                <Table/>
+                {paramsSelecting}
                 <button className={classes.Button} onClick={this.showSelectingHandler}>FILTER SPENDINGS</button>
-                {paramsSelecting}            
+                <Table/>
                 {newSpendings}
                 <nav className={classes.Navigation}>
                     <NavLink className={classes.Button} to={this.props.match.url + '/new'}>New Spending</NavLink>
