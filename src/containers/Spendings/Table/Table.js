@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import ReactDataGrid from "react-data-grid";
 import { Data, Toolbar, Editors } from "react-data-grid-addons";
 import classes from './Table.css';
@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import logo from '../../../assets/images/logo.jpg';
 const {DropDownEditor} = Editors; 
-const selectors = Data.Selectors;
+const Selectors = Data.Selectors;
 
 class Table extends React.Component {
     state = {
         filters: null,
+        selectedIndexes: []
     }
 
     onGridRowsUpdated = ({ fromRow, toRow, updated }) => {
@@ -56,7 +57,7 @@ class Table extends React.Component {
 
     getRows = (rows) => {
         const filters = this.state.filters;
-        return selectors.getRows({ rows, filters });
+        return Selectors.getRows({ rows, filters });
     }
 
     getValidFilterValues = (rows, columnId) => {
@@ -94,13 +95,35 @@ class Table extends React.Component {
     EmptyRowsView = () => {
         const message = "No data to show";
         return (
-          <div
-            style={{ textAlign: "center", backgroundColor: "#ddd", padding: "100px" }}
-          >
+          <div style={{ textAlign: "center", backgroundColor: "#ddd", padding: "100px" }}>
             <h3>{message}</h3>
             <img src={logo} alt={message} />
           </div>
         );
+    }
+
+    onRowsSelected = rows => {
+        const newSelected = this.state.selectedIndexes.concat(
+            rows.map(r => r.rowIdx)
+        )
+        this.setState({
+            selectedIndexes: newSelected
+        });
+        console.log(newSelected)
+    };
+
+    onRowsDeselected = rows => {
+        let rowIndexes = rows.map(r => r.rowIdx);
+        const newSelected =  this.state.selectedIndexes.filter(
+            i => rowIndexes.indexOf(i) === -1
+        )
+        this.setState({
+            selectedIndexes: newSelected
+        });
+    };
+
+    onDeleteHandler = () => {
+
     }
 
     render() {
@@ -121,17 +144,28 @@ class Table extends React.Component {
                     ...s, 
                     category: cats[cats.findIndex(c=> c.id === s.category)].name,
                     account: acc[acc.findIndex(a => a.id === s.account)].name
-                } 
+                }
             });
             const updatedDate = Object.keys(spendings).map(key => {
                 return {...spendings[key], date: spendings[key].date.slice(0,10)}
             });
             const filteredRows = this.getRows(updatedDate);
             table = 
+            <Fragment>
             <ReactDataGrid
+                rowKey = 'id'
                 columns={columns}
                 rowGetter={i => filteredRows[i]}
                 rowsCount={spendings.length}
+                rowSelection={{
+                    showCheckbox: true,
+                    enableShiftSelect: true,
+                    onRowsSelected : this.onRowsSelected,
+                    onRowsDeselected: this.onRowsDeselected,
+                    selectBy: {
+                      indexes: this.state.selectedIndexes
+                    }
+                  }}
                 toolbar={<Toolbar enableFilter={true} />}
                 onAddFilter={filter => this.handleFilterChange(filter)}
                 onGridRowsUpdated={this.onGridRowsUpdated}      
@@ -143,6 +177,8 @@ class Table extends React.Component {
                 getValidFilterValues={key => this.getValidFilterValues(filteredRows, key)}
                 emptyRowsView={this.EmptyRowsView}
             />
+            <button>Delete selected rows</button>
+            </Fragment>
         }
         return (
             <div className={classes.Table}>
