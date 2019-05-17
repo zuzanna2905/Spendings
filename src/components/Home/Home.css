@@ -14,11 +14,14 @@
     background-position: center;
 }
 
-.button{
+.Home a {
+    text-decoration: none;
     padding: 10px 10px;
     border-radius: 10px;
     font-weight: bold;
+    color: black;
     background-color: white;
+    border: 1px solid white;
 }
 
 .title{
