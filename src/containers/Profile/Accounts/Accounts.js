@@ -8,7 +8,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 class Accounts extends Component {
     state = {
         showLabel : ['Show My Accounts', 'Hide Accounts'],        
-        showAccounts: false,
+        showAccounts: true,
         showInputAccount: false
     }
 
@@ -43,10 +43,10 @@ class Accounts extends Component {
         return (
             <div className={classes.Accounts}>
                 <h3>Accounts managing</h3>
-                <button onClick={this.showAccountsHandler}>{buttonLabel}</button>            
-                    {accounts}
                 <button onClick={this.showAccountAddingHandler}>Create new Account</button>
                     {inputAccount}
+                <button onClick={this.showAccountsHandler}>{buttonLabel}</button>            
+                    {accounts}
             </div>
         );
     }
