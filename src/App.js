@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Home from './components/Home/Home';
 import Spendings from './containers/Spendings/Spendings';
 import Profile from './containers/Profile/Profile';
 import Reports from './containers/Reports/Reports';
@@ -12,10 +13,11 @@ class App extends Component {
       <BrowserRouter>
         <Layout>
           <Switch>
+            <Route path='/home' component={Home} />
             <Route path='/spendings' component={Spendings} />
             <Route path='/profile' component={Profile} />
             <Route path='/reports' component={Reports}/>
-            <Redirect from='/' to='/spendings'/>
+            <Redirect from='/' to='/home'/>
           </Switch>
         </Layout>
       </BrowserRouter>

@@ -1,0 +1,21 @@
+.Footer{
+    margin-top: 0px;
+    text-align: center;
+    margin: auto;
+}
+
+.Footer ul {
+    padding: 0;
+}
+
+.Footer li{
+    padding: 10px;
+    list-style: none;
+    display: inline;
+    color: white;
+}
+
+.Footer a {
+    text-decoration: none;
+    color: white;
+}
