@@ -1,3 +1,7 @@
+.Container{
+    margin: 90px auto;
+}
+
 .Charts {
     display: flex;
     align-items: center;

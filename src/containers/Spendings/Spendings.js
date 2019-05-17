@@ -115,10 +115,7 @@ class Spendings extends Component {
                 {newSpendings}
                 <nav className={classes.Navigation}>
                     <NavLink className={classes.Button} to={this.props.match.url + '/new'}>New Spending</NavLink>
-                    <NavLink className={classes.Button} to={this.props.match.url + '/charts'}>Spending Charts</NavLink>
                 </nav>
-                <Route path={this.props.match.path + '/charts'} 
-                component={Charts}/>
                 <Route path={this.props.match.path + '/new'} 
                 component={AddingSpending}/>
             </div>
