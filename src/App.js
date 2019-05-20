@@ -1,34 +1,64 @@
 import React, { Component } from 'react';
+import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import * as actions from './store/actions/index';
+import { connect } from 'react-redux';
 import Home from './components/Home/Home';
 import Spendings from './containers/Spendings/Spendings';
 import Profile from './containers/Profile/Profile';
 import Reports from './containers/Reports/Reports';
-import Signup from './components/Session/Signup/Signup';
-import Login from './components/Session/Login/Login';
+import Signup from './containers/Session/Signup/Signup';
+import Login from './containers/Session/Login/Login';
+import Logout from './containers/Session/Logout/Logout';
 import Charts from './containers/Spendings/Charts/Charts';
-import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import Layout from './hoc/Layout/Layout';
 
 class App extends Component {
+  componentDidMount () {
+    this.props.onTryAutoSignup();
+  }
+
   render() {
-    // !!!!!!!! - ostatecznie pobieranie kluczowych danych ma być przy logowaniu
+    let routes = (
+      <Switch>
+        <Route path='/' exact component={Home} />
+        <Route path='/signup' component={Signup}/>
+        <Route path='/login' component={Login}/>
+        <Redirect to='/'/>
+      </Switch>
+    )
+    if(this.props.isAuthenticated) {
+      routes = (
+        <Switch>
+          <Route path='/' exact component={Home} />
+          <Route path='/spendings' component={Spendings} />
+          <Route path='/profile' component={Profile} />
+          <Route path='/reports' component={Reports}/>
+          <Route path='/charts' component={Charts}/>
+          <Route path='/logout' component={Logout}/>
+          <Redirect to='/'/>
+      </Switch>
+      )
+    }
     return (
       <BrowserRouter>
         <Layout>
-          <Switch>
-            <Route path='/home' component={Home} />
-            <Route path='/spendings' component={Spendings} />
-            <Route path='/profile' component={Profile} />
-            <Route path='/reports' component={Reports}/>
-            <Route path='/charts' component={Charts}/>
-            <Route path='/signup' component={Signup}/>
-            <Route path='/login' component={Login}/>
-            <Redirect from='/' to='/home'/>
-          </Switch>
+          {routes}
         </Layout>
       </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.sess.token !== null
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

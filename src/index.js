@@ -9,12 +9,14 @@ import { Provider } from 'react-redux';
 import profileReducer from './store/reducers/profile';
 import spendingsReducer from './store/reducers/spendings';
 import reportsReducer from './store/reducers/reports';
+import sessionsReducer from './store/reducers/session';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
     prof: profileReducer,
     spend: spendingsReducer,
-    repo: reportsReducer
+    repo: reportsReducer,
+    sess: sessionsReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

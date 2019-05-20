@@ -3,7 +3,6 @@ import XYPlot from '../../../components/XYPlot/XYPlot';
 import RadialChart from '../../../components/RadialChart/RadialChart';
 import classes from './Charts.css';
 import { connect } from 'react-redux';
-import {Redirect} from 'react-router-dom';
 import moment from 'moment';
 import Select from '../../../components/UI/Select/Select';
 

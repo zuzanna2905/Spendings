@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SelectData from '../../components/SelectData/SelectData';
 import Table from './Table/Table';
-import Charts from './Charts/Charts';
 import AddSpending from './AddingSpending/AddingSpending';
 import {NavLink, Route} from 'react-router-dom';
 import classes from './Spendings.css';

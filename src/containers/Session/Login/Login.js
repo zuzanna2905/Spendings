@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import Form from '../../UI/Form/Form';
+import { Redirect } from 'react-router-dom';
+import Form from '../../../components/UI/Form/Form';
 import classes from './Login.css';
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions/index';
 
 class login extends Component {
     state = {
@@ -33,7 +36,8 @@ class login extends Component {
             }
         },
         formIsValid: false,
-        loading: false
+        loading: false, 
+        isSignup: false
     }
 
     inputHandler = (inputID, e) => {
@@ -57,8 +61,18 @@ class login extends Component {
         }
         return isValid;
     }
+    
+    submitHandler = (event) => {
+        event.preventDefault();
+        this.props.onAuth(this.state.formInputs.email.value, this.state.formInputs.password.value, this.state.isSignup)
+    }
 
-    render() {        
+    render() {   
+        let authRedirect = null;
+        if (this.props.isAuthenticated) {
+            authRedirect = <Redirect to='/spendings'/>
+        }
+
         const formElementsArray = [];
         for (let key in this.state.formInputs){
             formElementsArray.push({
@@ -68,10 +82,11 @@ class login extends Component {
         }
         return (
             <div className={classes.Login}>
+                {authRedirect}
                 <h1>Log in for application</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={()=>null}
+                    clicked={this.submitHandler}
                     inputHandler={this.inputHandler}
                     actionName='Log in'
                     disabled={!this.state.formIsValid}
@@ -81,4 +96,16 @@ class login extends Component {
     }
 }
 
-export default login;
+const mapStateToProps = state =>{
+    return {
+        isAuthenticated: state.sess.token !== null
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(login);
