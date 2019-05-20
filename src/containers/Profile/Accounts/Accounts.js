@@ -1,52 +1,77 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Account from '../../../components/Account/Account';
-import classes from './Accounts.css';
 import { connect } from 'react-redux';
 import NewAccount from '../../../components/NewAccount/NewAccount';
 import Spinner from '../../../components/UI/Spinner/Spinner';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+
+const TabContainer = props => {
+    return (
+        <Typography component="div" style={{ padding: 8 * 3 }}>
+            {props.children}
+        </Typography>
+        );
+}
+
+const styles = theme => ({
+    root: {
+        marginTop: '10px',
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: 'transparent',
+    },
+    app: {
+        backgroundColor: 'transparent'
+    },
+    tabs: {
+        color: 'white'
+    }
+});
 
 class Accounts extends Component {
     state = {
-        showLabel : ['Show My Accounts', 'Hide Accounts'],        
-        showAccounts: true,
-        showInputAccount: false
+        value: 0
     }
 
-    showAccountsHandler = () =>{
-        this.setState({showAccounts: !this.state.showAccounts})
-    }
-
-    showAccountAddingHandler = () =>{
-        this.setState({showInputAccount: !this.state.showInputAccount})
-    }
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
 
     render() {
-        let buttonLabel = this.state.showLabel[0];
-        if(this.state.showAccounts) {
-            buttonLabel = this.state.showLabel[1];
-        }
-        let inputAccount = ''
-        if(this.state.showInputAccount) {
-            inputAccount = <NewAccount/>
-        }
-        let accounts = <Spinner />
+        const { classes } = this.props;
+        const { value } = this.state;
+        let inputAccount = <NewAccount/>
+        let accountsList = <Spinner />
+        let tabs = null;
         if(this.props.accounts){
-            accounts = 
-            <Fragment>
-                <ul hidden={!this.state.showAccounts} className={classes.List}>
-                {
-                    this.props.accounts.map(account => <Account account={account} key={account.id}/>)
-                }
-                </ul>
-            </Fragment>
+            accountsList = this.props.accounts.map(account => 
+                <TabContainer>
+                    <Account account={account} key={account.id}/>
+                </TabContainer>
+            )
+            tabs = this.props.accounts.map(account => <Tab key={account.name} label={account.name} />)
         }
         return (
-            <div className={classes.Accounts}>
+            <div className={classes.root}>
                 <h3>Accounts managing</h3>
-                <button onClick={this.showAccountAddingHandler}>Create new Account</button>
-                    {inputAccount}
-                <button onClick={this.showAccountsHandler}>{buttonLabel}</button>            
-                    {accounts}
+                <AppBar position="static" className={classes.app}>
+                    <Tabs
+                    value={value}
+                    onChange={this.handleChange}
+                    className={classes.tabs}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    >
+                    <Tab key={0} label='Create New'/>
+                    {tabs}
+                    </Tabs>
+                </AppBar>
+                {value === 0 && inputAccount}
+                {accountsList[value-1]}
             </div>
         );
     }
@@ -54,9 +79,8 @@ class Accounts extends Component {
 
 const mapStateToProps = state =>{
     return {
-        accounts: state.prof.accounts,
-        loading: state.prof.loading
+        accounts: state.prof.accounts
     }
 }
 
-export default connect(mapStateToProps)(Accounts);
+export default  connect(mapStateToProps)(withStyles(styles)(Accounts));

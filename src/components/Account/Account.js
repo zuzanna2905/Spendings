@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import * as classes from './Account.css';
@@ -28,14 +28,14 @@ const account = (props) => {
         </div>;
     }
     return (
-    <li>
+    <Fragment>
         <h3>{account.name}</h3>
         {value}
         <button disabled={true} onClick={() => props.removeAccount(account.id)}>Delete</button>
         <button onClick={() => props.showEditAccount(account.id)}>Edit</button>
             {editAccount}
         <button disabled={props.newValue.length < 3} hidden={!account.edit} onClick={() => props.editAccount(account.id, props.newValue)}>Set New Name</button>
-    </li>
+    </Fragment>
   )
 }
 

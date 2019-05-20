@@ -1,10 +1,12 @@
 import * as actionTypes from './actionTypes';
+import axios from 'axios';
 import queryString from 'query-string';
 const acc = 'http://localhost:3001/accounts';
 
 export const addAccount = (account) =>{
     return dispatch => {
         dispatch(addAccountStart());
+
         const query = queryString.stringify({          
             name: account,
             userId: 1,
