@@ -70,6 +70,10 @@ class login extends Component {
     render() {   
         let authRedirect = null;
         if (this.props.isAuthenticated) {
+            this.props.setColumns();
+            this.props.fetchCategories();
+            this.props.fetchSpendings(this.props.token, this.props.userId);
+            this.props.fetchAccounts();
             authRedirect = <Redirect to='/spendings'/>
         }
 
@@ -98,6 +102,8 @@ class login extends Component {
 
 const mapStateToProps = state =>{
     return {
+        token: state.sess.token,
+        userId: state.sess.userId,
         isAuthenticated: state.sess.token !== null
     }
 }

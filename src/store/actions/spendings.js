@@ -1,7 +1,5 @@
 import * as actionTypes from './actionTypes';
-import queryString from 'query-string';
 import axios from 'axios';
-const spend = 'http://localhost:3001/spendings';
 
 export const setParamValue = (id, value) => {
     return {
@@ -11,24 +9,12 @@ export const setParamValue = (id, value) => {
     }
 }
 
-export const addSpending = (spending) => {
+export const addSpending = (token, spending) => {
     return dispatch => {
         dispatch(addSpendingStart());
-        const query = queryString.stringify({          
-            name: spending.name,
-            category: spending.category,
-            value: spending.value,
-            account: spending.account,
-            description: spending.description,
-            date: spending.date//new Date(spending.date).toISOString() // nie lubi na string?
-        })
-        fetch('http://localhost:3001/spendings?' + query, {
-            method: 'post',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(response => response.json())
-        .then(spendings=> {
-            dispatch(addSpendingSuccess(spending));
+        axios.post('https://spendings-5d14b.firebaseio.com/spendings.json?auth=' + token, spending)
+        .then(r => {
+            dispatch(addSpendingSuccess(r.data));
         })
         .catch(err => {
             dispatch(addSpendingFail(err))
@@ -135,24 +121,12 @@ export const updateDataFail = () => {
     }
 }
 
-export const updateData = (spendings, row) => {
+export const updateData = (token, spendingId, spending) => {
     return dispatch => {
         dispatch(updateDataStart());
-        const query = queryString.stringify({          
-            name:row.name, 
-            category:row.category, 
-            value:row.value, 
-            account:row.account, 
-            description:row.description,
-            date: new Date(row.date).toISOString()
-        })
-        fetch('http://localhost:3001/spendings/' + row.id + '?' + query, {
-            method: 'put',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(response => response.json())
+        axios.put(`https://spendings-5d14b.firebaseio.com/spendings/${spendingId}.json?auth=` + token, spending)
         .then(x => {
-            dispatch(updateDataSuccess(spendings));
+            dispatch(updateDataSuccess(x.data));
         })
         .catch(err => {
             dispatch(updateDataFail(err))

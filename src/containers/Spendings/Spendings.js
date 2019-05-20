@@ -4,7 +4,6 @@ import Table from './Table/Table';
 import AddSpending from './AddingSpending/AddingSpending';
 import {NavLink, Route} from 'react-router-dom';
 import classes from './Spendings.css';
-import queryString from 'query-string';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import * as actions from '../../store/actions/index';
@@ -70,14 +69,14 @@ class Spendings extends Component {
     }
 
     componentWillMount () {
-        const query = '?' + queryString.stringify({
-            start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
-            end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
-            account : this.state.paramsInputs.account.value
-        });
+        // const query = '?' + queryString.stringify({
+        //     start : new Date(this.state.paramsInputs.startDate.value).toISOString(),
+        //     end :  new Date(this.state.paramsInputs.endDate.value).toISOString(),
+        //     account : this.state.paramsInputs.account.value
+        // });
         this.props.setColumns();
         this.props.fetchCategories();
-        this.props.fetchSpendings(query);
+        this.props.fetchSpendings(this.props.token, this.props.userId);
         this.props.fetchAccounts();
     }
 
@@ -124,7 +123,9 @@ class Spendings extends Component {
 
 const mapStateToProps = state => {
     return {
-        added: state.spend.added
+        added: state.spend.added,
+        token: state.sess.token,
+        userId: state.sess.userId
     }
 }
 
@@ -132,7 +133,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setParamsValue: (paramId, value) => dispatch(actions.setParamValue(paramId, value)),
         fetchCategories: () => dispatch(actions.fetchCategories()),
-        fetchSpendings: (query) => dispatch(actions.fetchSpendings(query)),
+        fetchSpendings: (token, userId) => dispatch(actions.fetchSpendings(token, userId)),
         setColumns: () => dispatch(actions.setColumns()),
         fetchAccounts: () => dispatch(actions.fetchAccounts())
     }

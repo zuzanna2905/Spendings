@@ -3,7 +3,6 @@ import Form from '../../../components/UI/Form/Form';
 import classes from './AddingSpending.css';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
-import {Redirect} from 'react-router';
 
 class Spending extends Component {
     state = {
@@ -37,7 +36,7 @@ class Spending extends Component {
             category: {
                 type: 'select', 
                 elementConfig: {},
-                value: '',
+                value: '1',
                 id: 1,
                 validation: {
                     required: true
@@ -61,7 +60,7 @@ class Spending extends Component {
             account: {
                 type: 'select', 
                 elementConfig: {},
-                value: '',
+                value: '1',
                 id: 1,
                 validation: {
                     required: true
@@ -83,13 +82,13 @@ class Spending extends Component {
                 touched: false
             }
         },
-        formIsValid: false,
+        formIsValid: true,
         loading: false
     }
 
-    componentWillMount () {
-        this.props.addingInit();
-    }
+    // componentWillMount () {
+    //     this.props.addingInit();
+    // }
 
     componentDidMount = () => {
         const categories = this.props.categories ? this.props.categories.map(c => {
@@ -155,7 +154,7 @@ class Spending extends Component {
         for(let i in inputForm){
             formIsValid = inputForm[i].valid && formIsValid;
         }
-        this.setState({formInputs: inputForm, formIsValid: formIsValid});
+        this.setState({formInputs: inputForm, formIsValid: true});
     }
 
     checkValidity = (value, rules) =>{
@@ -174,24 +173,19 @@ class Spending extends Component {
                 config: this.state.formInputs[key]
             })
         }
-        if(this.props.added) {
-            return <Redirect to='/spendings' />
-        }
-        if(!this.props.categories || !this.props.accounts){
-            return <Redirect to='/spendings' />
-        }
         return (    
             <div className={classes.Spending}>
                 <h1>Add New Spending</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={() =>this.props.spendingSubmitHandler({ 
+                    clicked={() =>this.props.spendingSubmitHandler(this.props.token, { 
                             name: this.state.formInputs.name.value,
                             category: this.state.formInputs.category.id,
                             value: +this.state.formInputs.value.value,
                             date: this.state.formInputs.date.value,
                             account: this.state.formInputs.account.id,
-                            description: this.state.formInputs.description.value
+                            description: this.state.formInputs.description.value,
+                            user: this.props.userId
                         })
                     }
                     inputHandler={this.inputHandler}
@@ -207,13 +201,15 @@ const mapStateToProps = state => {
     return {
         categories: state.spend.categories,
         added: state.spend.added,
-        accounts: state.prof.accounts
+        accounts: state.prof.accounts,
+        userId: state.sess.userId,
+        token: state.sess.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        spendingSubmitHandler: (spending) => dispatch(actions.addSpending(spending)),
+        spendingSubmitHandler: (token, spending) => dispatch(actions.addSpending(token, spending)),
         addingInit: () => dispatch(actions.addingInit())
     }
 }

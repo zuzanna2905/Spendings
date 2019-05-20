@@ -170,7 +170,7 @@ class Table extends React.Component {
                 onAddFilter={filter => this.handleFilterChange(filter)}
                 onGridRowsUpdated={this.onGridRowsUpdated}      
                 onGridSort={(sortColumn, sortDirection) =>
-                    this.props.updateData(this.sortRows(spendings, sortColumn, sortDirection))
+                    this.props.updateData(this.props.token, this.this.sortRows(spendings, sortColumn, sortDirection))
                 }
                 enableCellSelect={true}
                 onClearFilters={() => this.setState({filters: {}})}
@@ -192,13 +192,15 @@ const mapStateToProps = state => {
         spendings: state.spend.spendings,
         columns: state.spend.columns,
         cats: state.spend.categories,
-        accounts: state.prof.accounts
+        accounts: state.prof.accounts,
+        userId: state.sess.userId,
+        token: state.sess.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: (spendings, row) => dispatch(actions.updateData(spendings, row))
+        updateData: (token, spendingId, spending) => dispatch(actions.updateData(token, spendingId, spending))
     }
 }
 
