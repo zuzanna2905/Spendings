@@ -6,7 +6,7 @@ import * as actions from '../../store/actions/index';
 
 class Profile extends Component {
     componentWillMount () {
-        this.props.onFetchAccounts();
+        this.props.onFetchAccounts(this.props.token, this.props.userId);
     }
 
     render() {
@@ -33,13 +33,15 @@ class Profile extends Component {
 
 const mapStateToProps = state =>{
     return {
-        profile: state.prof.profile
+        profile: state.prof.profile,
+        userId: state.sess.userId,
+        token: state.sess.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchAccounts: () => dispatch(actions.fetchAccounts())
+        onFetchAccounts: (token, userId) => dispatch(actions.fetchAccounts(token, userId))
     }
 }
 

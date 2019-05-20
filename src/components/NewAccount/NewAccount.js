@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 
 const newAccount = (props) => {
-  return (
+    return (
     <div>
         <p>Set account name (min-length: 3)</p>
         <input 
@@ -13,20 +13,28 @@ const newAccount = (props) => {
             value={props.newAcc}
             onChange={props.addAccountHandler}
         />
-        <button disabled={props.newAcc.length < 3} onClick={() => props.addNewAccount(props.newAcc)}>Add Acount</button>
+        <button disabled={props.newAcc.length < 3} onClick={() => 
+            props.addNewAccount({
+                name: props.newAcc,
+                user: props.userId}, 
+                props.token)}>
+        Add Acount</button>
     </div>
   )
 }
 
 const mapStateToProps = state => {
     return {
-        newAcc: state.prof.newAccount
+        newAcc: state.prof.newAccount,
+        token: state.sess.token,
+        userId: state.sess.userId,
+        accs: state.prof.accounts
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addNewAccount: (account) => dispatch(actions.addAccount(account)),
+        addNewAccount: (account, token) => dispatch(actions.addAccount(account, token)),
         addAccountHandler: (e) => dispatch(actions.setAccount(e.target.value))
     }
 }

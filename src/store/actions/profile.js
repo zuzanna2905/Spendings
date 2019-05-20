@@ -1,24 +1,13 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 import queryString from 'query-string';
-const acc = 'http://localhost:3001/accounts';
 
-export const addAccount = (account) =>{
+export const addAccount = (account, token) =>{
     return dispatch => {
         dispatch(addAccountStart());
-
-        const query = queryString.stringify({          
-            name: account,
-            userId: 1,
-            id: (Math.random() * 1000).toFixed(0)
-        })
-        fetch('http://localhost:3001/accounts?' + query, {
-            method: 'post',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(response => response.json())
-        .then(spendings=> {
-            dispatch(addAccountSuccess(account));
+        axios.post('https://spendings-5d14b.firebaseio.com/accounts.json?auth=' + token, account)
+        .then(r => {
+            dispatch(addAccountSuccess(r.data.name));
         })
         .catch(err => {
             dispatch(addAccountFail(err))
@@ -162,21 +151,19 @@ export const fetchAccountsFail = () => {
     }
 }
 
-export const fetchAccounts = () => {
+export const fetchAccounts = (token, userId) => {
     return dispatch => {
         dispatch(fetchAccountsStart());
-        fetch(acc, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'}
-        })
-        .then(response => response.json())
-        .then(accs => {
-            const accounts = accs.map(a =>{ 
-                return {
-                    ...a,
-                    edit: false
-                }
-            })
+        const queryParams = '?auth=' + token + '&orderBy="user"&equalTo="' + userId + '"';
+        axios.get('https://spendings-5d14b.firebaseio.com/accounts.json' + queryParams)
+        .then(r => {
+            let accounts = [];
+            for(let key in r.data){
+                accounts.push({
+                    ...r.data[key],
+                    id: key
+                })
+            }
             dispatch(fetchAccountsSuccess(accounts))
         })        
         .catch(err => {
