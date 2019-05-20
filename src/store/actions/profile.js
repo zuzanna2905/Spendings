@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
-import queryString from 'query-string';
 
 export const addAccount = (account, token) =>{
     return dispatch => {
@@ -34,15 +33,11 @@ export const addAccountFail = () => {
     }
 }
 
-export const removeAccount = (accountId) =>{
+export const removeAccount = (token, accountId) =>{
     return dispatch => {
         dispatch(removeAccountStart());
-        fetch('http://localhost:3001/accounts/' + accountId, {
-            method: 'delete',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(response => response.json())
-        .then(spendings=> {
+        axios.delete(`https://spendings-5d14b.firebaseio.com/accounts/${accountId}.json?auth=` + token)
+        .then(r => {
             dispatch(removeAccountSuccess(accountId));
         })
         .catch(err => {
@@ -76,18 +71,14 @@ export const setAccount = (value) => {
     }
 }
 
-export const editAccount = (id, name) => {
+export const editAccount = (id, name, token, userId) => {
     return dispatch => {
         dispatch(editAccountStart());
-        const query = queryString.stringify({          
-            name: name
+        axios.put(`https://spendings-5d14b.firebaseio.com/accounts/${id}.json?auth=` + token, {
+            name: name,
+            user: userId
         })
-        fetch('http://localhost:3001/accounts/' + id + '?' + query, {
-            method: 'put',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(response => response.json())
-        .then(spendings=> {
+        .then(r=> {
             dispatch(editAccountSuccess(id));
         })
         .catch(err => {

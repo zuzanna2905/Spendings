@@ -31,10 +31,10 @@ const account = (props) => {
     <Fragment>
         <h3>{account.name}</h3>
         {value}
-        <button disabled={true} onClick={() => props.removeAccount(account.id)}>Delete</button>
+        <button onClick={() => props.removeAccount(props.token, account.id)}>Delete</button>
         <button onClick={() => props.showEditAccount(account.id)}>Edit</button>
             {editAccount}
-        <button disabled={props.newValue.length < 3} hidden={!account.edit} onClick={() => props.editAccount(account.id, props.newValue)}>Set New Name</button>
+        <button disabled={props.newValue.length < 3} hidden={!account.edit} onClick={() => props.editAccount(account.id, props.newValue, props.token, props.userId)}>Set New Name</button>
     </Fragment>
   )
 }
@@ -58,14 +58,16 @@ const lastSpend = (spendings, account) => {
 const mapStateToProps = state => {
     return {
         newValue: state.prof.newValue,
-        spendings: state.spend.spendings
+        spendings: state.spend.spendings,
+        token: state.sess.token,
+        userId: state.sess.userId
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        removeAccount: (id) => dispatch(actions.removeAccount(id)),
-        editAccount: (id, name) => dispatch(actions.editAccount(id, name)),
+        removeAccount: (token, id) => dispatch(actions.removeAccount(token, id)),
+        editAccount: (id, name, token, userId) => dispatch(actions.editAccount(id, name, token, userId)),
         showEditAccount: (id) => dispatch(actions.editOn(id)),
         onChangeAccount: (e) => dispatch(actions.newAccountName(e.target.value))
     }

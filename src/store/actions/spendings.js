@@ -1,8 +1,7 @@
 import * as actionTypes from './actionTypes';
 import queryString from 'query-string';
+import axios from 'axios';
 const spend = 'http://localhost:3001/spendings';
-const cat = 'http://localhost:3001/categories';
-const col = 'http://localhost:3001/columns';
 
 export const setParamValue = (id, value) => {
     return {
@@ -81,16 +80,21 @@ export const fetchCategoriesFail = (err) => {
     }
 }
 
-export const fetchSpendings = (query) => {
+export const fetchSpendings = (token, userId) => {
     return dispatch => {
         dispatch(fetchSpendingsStart());
-        fetch(spend + query, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'},
-        })
-        .then(response => response.json())
-        .then(spendings=> {
-            dispatch(fetchSpendingsSuccess(spendings));
+        const queryParams = '?auth=' + token + '&orderBy="user"&equalTo="' + userId + '"';
+        axios.get('https://spendings-5d14b.firebaseio.com/spendings.json' + queryParams)
+        .then(r=> {
+            let spends = [];
+            for(let key in r.data){
+                spends.push({
+                    ...r.data[key],
+                    id: key
+                })
+            }
+            console.log('spends', spends)
+            dispatch(fetchSpendingsSuccess(spends));
         })
         .catch(err => {
             dispatch(fetchSpendingsFail(err))
@@ -101,13 +105,10 @@ export const fetchSpendings = (query) => {
 export const fetchCategories = () => {
     return dispatch => {
         dispatch(fetchCategoriesStart());
-        fetch(cat, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'}
-        })
-        .then(response => response.json())
-        .then(cats => {
-            dispatch(fetchCategoriesSuccess(cats))
+        axios.get('https://spendings-5d14b.firebaseio.com/categories.json')
+        .then(r => {
+            dispatch(fetchCategoriesSuccess(r.data))
+            console.log('categories ',r.data)
         })
         .catch(err => {
             dispatch(fetchCategoriesFail(err))
@@ -218,13 +219,10 @@ export const getColumnsFail = () => {
 export const setColumns = () =>{
     return dispatch => {
         dispatch(getColumnsStart());
-        fetch(col, {
-            method: 'get',
-            headers: {'Content-Type' : 'application/json'}
-        })
-        .then(response => response.json())
-        .then(cols => {
-            dispatch(getColumnsSuccess(cols))
+        axios.get('https://spendings-5d14b.firebaseio.com/columns.json')
+        .then(r => {
+            console.log('columns',r.data)
+            dispatch(getColumnsSuccess(r.data))
         })        
         .catch(err => {
             dispatch(getColumnsFail(err))

@@ -1,0 +1,11 @@
+.root {
+    margin-top: 10px;
+    flex-grow: 1;
+    width: 100%;
+    background-color: transparent;
+    box-shadow: 'none';
+}
+
+.tabs {
+    color: 'white';
+}

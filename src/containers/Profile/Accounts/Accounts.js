@@ -3,7 +3,7 @@ import Account from '../../../components/Account/Account';
 import { connect } from 'react-redux';
 import NewAccount from '../../../components/NewAccount/NewAccount';
 import Spinner from '../../../components/UI/Spinner/Spinner';
-import { withStyles } from '@material-ui/core/styles';
+import classes from './Accounts.css';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -17,21 +17,6 @@ const TabContainer = props => {
         );
 }
 
-const styles = theme => ({
-    root: {
-        marginTop: '10px',
-        flexGrow: 1,
-        width: '100%',
-        backgroundColor: 'transparent',
-    },
-    app: {
-        backgroundColor: 'transparent'
-    },
-    tabs: {
-        color: 'white'
-    }
-});
-
 class Accounts extends Component {
     state = {
         value: 0
@@ -42,7 +27,6 @@ class Accounts extends Component {
     };
 
     render() {
-        const { classes } = this.props;
         const { value } = this.state;
         let inputAccount = <NewAccount/>
         let accountsList = <Spinner />
@@ -53,12 +37,12 @@ class Accounts extends Component {
                     <Account account={account} key={account.id}/>
                 </TabContainer>
             )
-            tabs = this.props.accounts.map(account => <Tab key={account.name} label={account.name} />)
+            tabs = this.props.accounts.map(account => <Tab key={account.id} label={account.name} />)
         }
         return (
             <div className={classes.root}>
                 <h3>Accounts managing</h3>
-                <AppBar position="static" className={classes.app}>
+                <AppBar position="static" style={{backgroundColor: 'transparent', boxShadow: 'none'}} className={classes.app}>
                     <Tabs
                     value={value}
                     onChange={this.handleChange}
@@ -66,7 +50,7 @@ class Accounts extends Component {
                     variant="scrollable"
                     scrollButtons="auto"
                     >
-                    <Tab key={0} label='Create New'/>
+                    <Tab key={0} style={{backgroundColor: 'green'}} label='Create New'/>
                     {tabs}
                     </Tabs>
                 </AppBar>
@@ -83,4 +67,4 @@ const mapStateToProps = state =>{
     }
 }
 
-export default  connect(mapStateToProps)(withStyles(styles)(Accounts));
+export default  connect(mapStateToProps)(Accounts);
