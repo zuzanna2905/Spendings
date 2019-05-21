@@ -1,0 +1,20 @@
+.root {
+    padding-right: 10px;
+}
+  
+.highlight{
+    color: pink;
+    background-color: violet;
+}
+
+.spacer{
+    flex: 1 1 100%;
+}
+
+.actions {
+    color: pink;
+}
+
+.title {
+    flex: 0 0 auto;
+}

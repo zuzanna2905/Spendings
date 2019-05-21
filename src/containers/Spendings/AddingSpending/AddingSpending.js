@@ -178,7 +178,8 @@ class Spending extends Component {
                 <h1>Add New Spending</h1>
                 <Form 
                     inputs={formElementsArray} 
-                    clicked={() =>this.props.spendingSubmitHandler(this.props.token, { 
+                    clicked={() =>this.props.spendingSubmitHandler(this.props.token, {
+                            id: 0, 
                             name: this.state.formInputs.name.value,
                             category: this.state.formInputs.category.id,
                             value: +this.state.formInputs.value.value,
