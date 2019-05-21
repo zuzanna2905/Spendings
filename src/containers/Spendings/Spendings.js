@@ -77,7 +77,7 @@ class Spendings extends Component {
         this.props.setColumns();
         this.props.fetchCategories();
         this.props.fetchSpendings(this.props.token, this.props.userId);
-        this.props.fetchAccounts();
+        this.props.fetchAccounts(this.props.token, this.props.userId);
     }
 
     inputHandler = (inputID, e) => {
@@ -135,7 +135,7 @@ const mapDispatchToProps = dispatch => {
         fetchCategories: () => dispatch(actions.fetchCategories()),
         fetchSpendings: (token, userId) => dispatch(actions.fetchSpendings(token, userId)),
         setColumns: () => dispatch(actions.setColumns()),
-        fetchAccounts: () => dispatch(actions.fetchAccounts())
+        fetchAccounts: (token, userId) => dispatch(actions.fetchAccounts(token, userId))
     }
 }
 

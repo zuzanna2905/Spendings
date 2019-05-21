@@ -79,7 +79,7 @@ export const fetchSpendings = (token, userId) => {
                     id: key
                 })
             }
-            console.log('spends', spends)
+            console.log(spends)
             dispatch(fetchSpendingsSuccess(spends));
         })
         .catch(err => {
@@ -94,7 +94,6 @@ export const fetchCategories = () => {
         axios.get('https://spendings-5d14b.firebaseio.com/categories.json')
         .then(r => {
             dispatch(fetchCategoriesSuccess(r.data))
-            console.log('categories ',r.data)
         })
         .catch(err => {
             dispatch(fetchCategoriesFail(err))
@@ -195,8 +194,15 @@ export const setColumns = () =>{
         dispatch(getColumnsStart());
         axios.get('https://spendings-5d14b.firebaseio.com/columns.json')
         .then(r => {
-            console.log('columns',r.data)
-            dispatch(getColumnsSuccess(r.data))
+            let columns = []
+            for(let key in r.data){
+                columns.push({
+                    ...r.data[key],
+                    id: key
+                })
+            }
+            console.log(columns)
+            dispatch(getColumnsSuccess(columns))
         })        
         .catch(err => {
             dispatch(getColumnsFail(err))
