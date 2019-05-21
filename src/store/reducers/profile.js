@@ -80,30 +80,6 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: action.loading
             }
-        case actions.ADD_SPENDING_START:
-            return {
-                ...state
-            }
-        case actions.ADD_SPENDING_SUCCESS:
-            return {
-                ...state
-            }
-        case actions.ADD_SPENDING_FAIL:
-            return {
-                ...state
-            }
-        case actions.DELETE_SPENDING_START:
-            return {
-                ...state
-            }
-        case actions.DELETE_SPENDING_SUCCESS:
-            return {
-                ...state
-            }       
-        case actions.DELETE_SPENDING_FAIL:
-            return {
-                ...state
-            }     
         default: 
             return state;
     }
