@@ -157,9 +157,10 @@ export const deleteSpendingStart = () => {
     }
 }
 
-export const deleteSpendingSuccess = () => {
+export const deleteSpendingSuccess = (spendingId) => {
     return {
-        type: actionTypes.DELETE_SPENDING_SUCCESS
+        type: actionTypes.DELETE_SPENDING_SUCCESS,
+        spendingId: spendingId
     }
 }
 
@@ -211,5 +212,18 @@ export const setColumns = () =>{
 export const addingInit = () => {
     return {
         type: actionTypes.ADDING_INIT
+    }
+}
+
+export const deleteData = (token, spendingId) => {
+    return dispatch => {
+        dispatch(deleteSpendingStart());
+        axios.delete(`https://spendings-5d14b.firebaseio.com/spendings/${spendingId}.json?auth=` + token)
+        .then(r => {
+            dispatch(deleteSpendingSuccess(spendingId));
+        })
+        .catch(err => {
+            dispatch(deleteSpendingFail(err))
+        })
     }
 }

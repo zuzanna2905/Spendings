@@ -106,7 +106,12 @@ class Table2 extends Component {
     }
 
     deleteHandler = () => {
-        console.log('delete click')
+        console.log('delete click');
+        const selected = this.state.selected;
+        selected.forEach(s => {
+            console.log(s)
+            this.props.deleteData(this.props.token, s)
+        })
     }
 
     render() {    
@@ -125,7 +130,6 @@ class Table2 extends Component {
                     account: acc[acc.findIndex(a => a.id === s.account)].name
                 }
             });
-            console.log(spendings)
             emptyRows = rowsPerPage - Math.min(rowsPerPage, spendings.length - page * rowsPerPage);
             table = <Paper className={classes.root}>
                 <Toolbar numSelected={selected.length} deleteHandler={this.deleteHandler}/>        
@@ -209,7 +213,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: (token, spendingId, spending) => dispatch(actions.updateData(token, spendingId, spending))
+        updateData: (token, spendingId, spending) => dispatch(actions.updateData(token, spendingId, spending)),
+        deleteData: (token, spendingId) => dispatch(actions.deleteData(token, spendingId))
     }
 }
 
