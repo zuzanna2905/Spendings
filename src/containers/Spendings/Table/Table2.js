@@ -50,8 +50,10 @@ class Demo extends React.PureComponent {
     if (added) {
       added = {
         ...added[0],
+        category: parseInt(added[0].category),
         id: 0,
-        user: this.props.userId
+        user: this.props.userId,
+        value: parseInt(added[0].value)
       }
       this.props.addSpending(this.props.token, added)
     }
@@ -59,7 +61,8 @@ class Demo extends React.PureComponent {
       let row = this.props.spendings.filter(s => changed[s.id])
       const updated = {
         ...row[0],
-        ...changed[row[0].id]
+        ...changed[row[0].id],
+        category: parseInt(row[0].category)
       }
       this.props.updateData(this.props.token, updated.id , updated)
     }
@@ -84,7 +87,6 @@ class Demo extends React.PureComponent {
                 account: acc.findIndex(a => a.id === s.account) !== -1 ? acc[acc.findIndex(a => a.id === s.account)].name : 'none'
             }
         });
-        //console.log(rows)
         table = <Paper>
             <Grid
             rows={rows}
@@ -93,7 +95,7 @@ class Demo extends React.PureComponent {
             >
             <PagingState
             defaultCurrentPage={0}
-            defaultPageSize={5}
+            defaultPageSize={10}
             />
             <IntegratedPaging />
             <SortingState
