@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SelectData from '../../components/SelectData/SelectData';
-import Table from './Table/Table';
+import Table2 from './Table/Table2';
 import AddSpending from './AddingSpending/AddingSpending';
 import {NavLink, Route} from 'react-router-dom';
 import classes from './Spendings.css';
@@ -109,7 +109,7 @@ class Spendings extends Component {
                 <h3>Filter spending rows</h3>
                 {paramsSelecting}
                 <button className={classes.Button} onClick={this.showSelectingHandler}>FILTER SPENDINGS</button>
-                <Table/>
+                <Table2/>
                 {newSpendings}
                 <nav className={classes.Navigation}>
                     <NavLink className={classes.Button} to={this.props.match.url + '/new'}>New Spending</NavLink>

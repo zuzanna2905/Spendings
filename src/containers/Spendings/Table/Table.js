@@ -32,7 +32,7 @@ class Table extends React.Component {
             rows[i] = { ...rows[i], ...updated};
             updatedRow = rows[i];
         }
-        this.props.updateData(rows, updatedRow);
+        this.props.updateData(this.props.token, rows, updatedRow);
     };
     
     sortRows = (initialRows, sortColumn, sortDirection) => {
@@ -71,7 +71,7 @@ class Table extends React.Component {
     setEditor = (c) => {
         const acc = this.props.accounts;
         const cats = this.props.cats;
-        if(c.key === 'account'){     
+        if(c.name === 'account'){     
             let optionsAcc = acc ? acc.map(a => {
                 return {
                     id: a.id,
@@ -80,7 +80,7 @@ class Table extends React.Component {
             const AccountTypeEditor = <DropDownEditor options={optionsAcc} />  
             return AccountTypeEditor
         }
-        if(c.key === 'category'){    
+        if(c.name === 'category'){    
             let optionsCat = cats ? cats.map(c => {
                 return {
                     id: c.id,
@@ -131,6 +131,7 @@ class Table extends React.Component {
         const cats = this.props.cats;
         const acc = this.props.accounts;
         const cols = this.props.columns;
+        console.log(_spendings, cats, acc, cols);
         let table = <h3>Failed to load data</h3>;
         if(_spendings && cats && acc && cols){
             const columns = cols.map(c => {
@@ -143,13 +144,14 @@ class Table extends React.Component {
                 return {
                     ...s, 
                     category: cats[cats.findIndex(c=> c.id === s.category)].name,
-                    account: acc[acc.findIndex(a => a.id === s.account)].name
+                    account: acc[acc.findIndex(a => parseInt(a.id) === s.account)].name
                 }
             });
             const updatedDate = Object.keys(spendings).map(key => {
                 return {...spendings[key], date: spendings[key].date.slice(0,10)}
             });
             const filteredRows = this.getRows(updatedDate);
+            console.log(filteredRows)
             table = 
             <Fragment>
             <ReactDataGrid
@@ -164,7 +166,7 @@ class Table extends React.Component {
                     onRowsDeselected: this.onRowsDeselected,
                     selectBy: {
                       indexes: this.state.selectedIndexes
-                    }
+                    },
                   }}
                 toolbar={<Toolbar enableFilter={true} />}
                 onAddFilter={filter => this.handleFilterChange(filter)}
@@ -180,6 +182,7 @@ class Table extends React.Component {
             <button>Delete selected rows</button>
             </Fragment>
         }
+
         return (
             <div className={classes.Table}>
                 {table}

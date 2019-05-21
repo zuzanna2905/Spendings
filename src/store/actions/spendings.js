@@ -79,7 +79,6 @@ export const fetchSpendings = (token, userId) => {
                     id: key
                 })
             }
-            console.log(spends)
             dispatch(fetchSpendingsSuccess(spends));
         })
         .catch(err => {
@@ -201,7 +200,6 @@ export const setColumns = () =>{
                     id: key
                 })
             }
-            console.log(columns)
             dispatch(getColumnsSuccess(columns))
         })        
         .catch(err => {
