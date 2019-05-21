@@ -6,6 +6,8 @@ import {
     EditingState,
     SortingState,
     IntegratedSorting, 
+    PagingState,
+    IntegratedPaging,
 } from '@devexpress/dx-react-grid';
 import {
   Grid,
@@ -13,6 +15,7 @@ import {
   TableHeaderRow,
   TableEditRow,
   TableEditColumn,
+  PagingPanel,
 } from '@devexpress/dx-react-grid-material-ui';
 
 const getRowId = row => row.id;
@@ -23,6 +26,7 @@ class Demo extends React.PureComponent {
             { columnName: 'name', editingEnabled: false },
         ],
         sorting: [{ columnName: 'city', direction: 'asc' }],
+        pageSizes: [5, 10, 15, 0],
     }
 
     changeSorting = sorting => this.setState({ sorting });
@@ -50,7 +54,7 @@ class Demo extends React.PureComponent {
   }
 
   render() {
-    const {editingStateColumnExtensions, sorting } = this.state;
+    const {editingStateColumnExtensions, sorting, pageSizes } = this.state;
     const columns = this.props.columns;
     const rows = this.props.spendings;
     let table = <p>No data</p>;
@@ -61,6 +65,11 @@ class Demo extends React.PureComponent {
             columns={columns}
             getRowId={getRowId}
             >
+            <PagingState
+            defaultCurrentPage={0}
+            defaultPageSize={5}
+            />
+            <IntegratedPaging />
             <SortingState
             sorting={sorting}
             onSortingChange={this.changeSorting}
@@ -78,7 +87,10 @@ class Demo extends React.PureComponent {
                 showAddCommand
                 showEditCommand
                 showDeleteCommand
-            />
+            />          
+            <PagingPanel
+            pageSizes={pageSizes}
+          />
         </Grid>
       </Paper>
     }
