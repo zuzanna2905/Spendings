@@ -8,6 +8,11 @@ import {
     IntegratedSorting, 
     PagingState,
     IntegratedPaging,
+    FilteringState,
+    IntegratedFiltering,
+    SummaryState,
+    IntegratedSummary,
+    DataTypeProvider,
 } from '@devexpress/dx-react-grid';
 import {
   Grid,
@@ -16,6 +21,8 @@ import {
   TableEditRow,
   TableEditColumn,
   PagingPanel,
+  TableFilterRow,
+  TableSummaryRow,
 } from '@devexpress/dx-react-grid-material-ui';
 
 const getRowId = row => row.id;
@@ -25,10 +32,19 @@ class Demo extends React.PureComponent {
         editingStateColumnExtensions: [
             { columnName: 'name', editingEnabled: false },
         ],
-        sorting: [{ columnName: 'city', direction: 'asc' }],
+        sorting: [{ columnName: 'date', direction: 'asc' }],
         pageSizes: [5, 10, 15, 0],
+        filters: [{ columnName: 'account', value: '' }],
+        tableColumnExtensions: [
+            { columnName: 'value', align: 'right' },
+          ],
+        totalSummaryItems: [
+            { columnName: 'value', type: 'max' },
+            { columnName: 'value', type: 'sum' },
+        ],
     }
 
+    changeFilters = filters => this.setState({ filters });
     changeSorting = sorting => this.setState({ sorting });
 
     commitChanges = ( added, changed, deleted ) => {
@@ -54,7 +70,7 @@ class Demo extends React.PureComponent {
   }
 
   render() {
-    const {editingStateColumnExtensions, sorting, pageSizes } = this.state;
+    const {editingStateColumnExtensions, sorting, pageSizes, filters, tableColumnExtensions, totalSummaryItems } = this.state;
     const columns = this.props.columns;
     const rows = this.props.spendings;
     let table = <p>No data</p>;
@@ -75,19 +91,30 @@ class Demo extends React.PureComponent {
             onSortingChange={this.changeSorting}
             />
             <IntegratedSorting />
+            <FilteringState
+            filters={filters}
+            onFiltersChange={this.changeFilters}
+            />
+            <IntegratedFiltering />
             <EditingState
                 onCommitChanges={this.commitChanges}
                 defaultEditingRowIds={[0]}
                 columnExtensions={editingStateColumnExtensions}
             />
-            <Table />
+            <SummaryState
+            totalItems={totalSummaryItems}
+            />
+            <IntegratedSummary />
+            <Table columnExtensions={tableColumnExtensions}/>
             <TableHeaderRow showSortingControls/>
+            <TableFilterRow />
             <TableEditRow />
             <TableEditColumn
                 showAddCommand
                 showEditCommand
                 showDeleteCommand
-            />          
+            />
+            <TableSummaryRow />          
             <PagingPanel
             pageSizes={pageSizes}
           />
