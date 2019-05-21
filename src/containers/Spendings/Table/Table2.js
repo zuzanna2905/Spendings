@@ -47,7 +47,6 @@ class Demo extends React.PureComponent {
     changeSorting = sorting => this.setState({ sorting });
 
     commitChanges = ({ added, changed, deleted }) => {
-    let rows = this.props.spendings;
     if (added) {
       added = {
         ...added[0],
