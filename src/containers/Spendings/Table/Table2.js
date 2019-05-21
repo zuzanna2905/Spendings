@@ -29,7 +29,7 @@ const getRowId = row => row.id;
 class Demo extends React.PureComponent {
     state = {
         editingStateColumnExtensions: [
-            { columnName: 'name', editingEnabled: false },
+            { columnName: 'name', editingEnabled: true },
         ],
         sorting: [{ columnName: 'date', direction: 'asc' }],
         pageSizes: [5, 10, 15, 0],
@@ -46,26 +46,28 @@ class Demo extends React.PureComponent {
     changeFilters = filters => this.setState({ filters });
     changeSorting = sorting => this.setState({ sorting });
 
-    commitChanges = ( added, changed, deleted ) => {
+    commitChanges = ({ added, changed, deleted }) => {
     let rows = this.props.spendings;
     if (added) {
-      const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-      rows = [
-        ...rows,
-        ...added.map((row, index) => ({
-          id: startingAddedId + index,
-          ...row,
-        })),
-      ];
+      added = {
+        ...added[0],
+        id: 0,
+        user: this.props.userId
+      }
+      this.props.addSpending(this.props.token, added)
     }
     if (changed) {
-      rows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
+      let row = this.props.spendings.filter(s => changed[s.id])
+      const updated = {
+        ...row[0],
+        ...changed[row[0].id]
+      }
+      this.props.updateData(this.props.token, updated.id , updated)
     }
     if (deleted) {
       const deletedSet = new Set(deleted);
       rows = rows.filter(row => !deletedSet.has(row.id));
     }
-    this.setState({ rows });
   }
 
   render() {
@@ -76,13 +78,15 @@ class Demo extends React.PureComponent {
     const acc = this.props.accounts;
     let table = <p>No data</p>;
     if (columns && spendings && cats && acc){
+        console.log(spendings)
         const rows = spendings.map(s => {
             return {
                 ...s, 
-                category: cats[cats.findIndex(c=> c.id === s.category)].name,
-                account: acc[acc.findIndex(a => a.id === s.account)].name
+                category: cats.findIndex(c=> c.id === s.category) !== -1 ? cats[cats.findIndex(c=> c.id === s.category)].name : 'none',
+                account: acc.findIndex(a => a.id === s.account) !== -1 ? acc[acc.findIndex(a => a.id === s.account)].name : 'none'
             }
         });
+        //console.log(rows)
         table = <Paper>
             <Grid
             rows={rows}
@@ -149,7 +153,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateData: (token, spendingId, spending) => dispatch(actions.updateData(token, spendingId, spending))
+        updateData: (token, spendingId, spending) => dispatch(actions.updateData(token, spendingId, spending)),
+        addSpending: (token, spending) => dispatch(actions.addSpending(token, spending))
     }
 }
 
