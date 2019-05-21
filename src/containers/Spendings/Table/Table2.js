@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import Paper from '@material-ui/core/Paper';
-import { EditingState } from '@devexpress/dx-react-grid';
+import { 
+    EditingState,
+    SortingState,
+    IntegratedSorting, 
+} from '@devexpress/dx-react-grid';
 import {
   Grid,
   Table,
@@ -14,18 +18,16 @@ import {
 const getRowId = row => row.id;
 
 class Demo extends React.PureComponent {
-  constructor(props) {
-    super(props);
+    state = {
+        editingStateColumnExtensions: [
+            { columnName: 'name', editingEnabled: false },
+        ],
+        sorting: [{ columnName: 'city', direction: 'asc' }],
+    }
 
-    this.state = {
-      editingStateColumnExtensions: [
-        { columnName: 'name', editingEnabled: false },
-      ],
-    };
+    changeSorting = sorting => this.setState({ sorting });
 
-  }
-
-  commitChanges = ( added, changed, deleted ) => {
+    commitChanges = ( added, changed, deleted ) => {
     let rows = this.props.spendings;
     if (added) {
       const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
@@ -48,7 +50,7 @@ class Demo extends React.PureComponent {
   }
 
   render() {
-    const {editingStateColumnExtensions } = this.state;
+    const {editingStateColumnExtensions, sorting } = this.state;
     const columns = this.props.columns;
     const rows = this.props.spendings;
     let table = <p>No data</p>;
@@ -59,13 +61,18 @@ class Demo extends React.PureComponent {
             columns={columns}
             getRowId={getRowId}
             >
+            <SortingState
+            sorting={sorting}
+            onSortingChange={this.changeSorting}
+            />
+            <IntegratedSorting />
             <EditingState
                 onCommitChanges={this.commitChanges}
                 defaultEditingRowIds={[0]}
                 columnExtensions={editingStateColumnExtensions}
             />
             <Table />
-            <TableHeaderRow />
+            <TableHeaderRow showSortingControls/>
             <TableEditRow />
             <TableEditColumn
                 showAddCommand
