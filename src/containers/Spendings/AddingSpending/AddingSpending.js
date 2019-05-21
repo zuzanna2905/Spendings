@@ -36,7 +36,7 @@ class Spending extends Component {
             category: {
                 type: 'select', 
                 elementConfig: {},
-                value: '1',
+                value: '',
                 id: 1,
                 validation: {
                     required: true
@@ -60,7 +60,7 @@ class Spending extends Component {
             account: {
                 type: 'select', 
                 elementConfig: {},
-                value: '1',
+                value: '',
                 id: 1,
                 validation: {
                     required: true
@@ -85,10 +85,6 @@ class Spending extends Component {
         formIsValid: true,
         loading: false
     }
-
-    // componentWillMount () {
-    //     this.props.addingInit();
-    // }
 
     componentDidMount = () => {
         const categories = this.props.categories ? this.props.categories.map(c => {
@@ -210,8 +206,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        spendingSubmitHandler: (token, spending) => dispatch(actions.addSpending(token, spending)),
-        addingInit: () => dispatch(actions.addingInit())
+        spendingSubmitHandler: (token, spending) => dispatch(actions.addSpending(token, spending))
     }
 }
 

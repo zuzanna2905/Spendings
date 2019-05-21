@@ -113,9 +113,19 @@ class Table2 extends Component {
         const { order, orderBy, selected, rowsPerPage, page } = this.state;    
         let emptyRows = 0;
         const columns = this.props.columns;
-        const spendings = this.props.spendings;
+        let spendings = this.props.spendings;
+        const acc = this.props.accounts;
+        const cats = this.props.cats;
         let table = <h3>No data</h3>;
-        if(spendings && columns){
+        if(spendings && columns && acc && cats){
+            spendings = spendings.map(s => {
+                return {
+                    ...s, 
+                    category: cats[cats.findIndex(c=> c.id === s.category)].name,
+                    account: acc[acc.findIndex(a => a.id === s.account)].name
+                }
+            });
+            console.log(spendings)
             emptyRows = rowsPerPage - Math.min(rowsPerPage, spendings.length - page * rowsPerPage);
             table = <Paper className={classes.root}>
                 <Toolbar numSelected={selected.length} deleteHandler={this.deleteHandler}/>        
