@@ -15,7 +15,8 @@ export {
     fetchSpendings, 
     updateData,
     setColumns,
-    addingInit
+    addingInit,
+    deleteData
 } from './spendings';
 
 export {

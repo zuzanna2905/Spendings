@@ -65,8 +65,7 @@ class Demo extends React.PureComponent {
       this.props.updateData(this.props.token, updated.id , updated)
     }
     if (deleted) {
-      const deletedSet = new Set(deleted);
-      rows = rows.filter(row => !deletedSet.has(row.id));
+      this.props.deleteData(this.props.token, deleted[0])
     }
   }
 
@@ -154,7 +153,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         updateData: (token, spendingId, spending) => dispatch(actions.updateData(token, spendingId, spending)),
-        addSpending: (token, spending) => dispatch(actions.addSpending(token, spending))
+        addSpending: (token, spending) => dispatch(actions.addSpending(token, spending)),
+        deleteData: (token, spendingId) => dispatch(actions.deleteData(token, spendingId))
     }
 }
 
