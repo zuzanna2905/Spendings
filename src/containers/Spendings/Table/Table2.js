@@ -11,8 +11,7 @@ import {
     FilteringState,
     IntegratedFiltering,
     SummaryState,
-    IntegratedSummary,
-    DataTypeProvider,
+    IntegratedSummary
 } from '@devexpress/dx-react-grid';
 import {
   Grid,
@@ -72,9 +71,18 @@ class Demo extends React.PureComponent {
   render() {
     const {editingStateColumnExtensions, sorting, pageSizes, filters, tableColumnExtensions, totalSummaryItems } = this.state;
     const columns = this.props.columns;
-    const rows = this.props.spendings;
+    const spendings = this.props.spendings;
+    const cats = this.props.cats;
+    const acc = this.props.accounts;
     let table = <p>No data</p>;
-    if (columns && rows){
+    if (columns && spendings && cats && acc){
+        const rows = spendings.map(s => {
+            return {
+                ...s, 
+                category: cats[cats.findIndex(c=> c.id === s.category)].name,
+                account: acc[acc.findIndex(a => a.id === s.account)].name
+            }
+        });
         table = <Paper>
             <Grid
             rows={rows}
