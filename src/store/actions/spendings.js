@@ -106,10 +106,10 @@ export const updateDataStart = () => {
     }
 }
 
-export const updateDataSuccess = (spendings) => {
+export const updateDataSuccess = (spending) => {
     return {
         type: actionTypes.UPDATE_DATA_SUCCESS,
-        spendings: spendings
+        spending: spending
     }
 }
 
