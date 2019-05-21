@@ -1,5 +1,4 @@
 import * as actions from '../actions/actionTypes';
-import { Filters } from "react-data-grid-addons";
 
 const initialState = {
     categories : null,
@@ -12,35 +11,6 @@ const initialState = {
     },
     loading: false,
     added: false
-}
-
-const setFilter = (column) => {
-    let filter = null;
-    switch(column.data_type){
-        case 'integer':
-            filter = Filters.NumericFilter;
-            break;
-        case 'numeric':
-            filter = Filters.NumericFilter;
-            break;
-        case 'character varying':
-            filter = Filters.MultiSelectFilter;
-            break;
-        default:
-            filter = Filters.NumericFilter
-            break;
-    }
-    switch(column.column_name){
-        case 'category':
-            filter = Filters.SingleSelectFilter;
-            break;
-        case 'account': 
-            filter = Filters.SingleSelectFilter;
-            break;
-        default:
-            break;
-    }
-    return filter;
 }
 
 const reducer = (state = initialState, action) => {
@@ -57,7 +27,7 @@ const reducer = (state = initialState, action) => {
         case actions.ADD_SPENDING_SUCCESS:
             return {
                 ...state,
-                spendings: state.spendings.concat(action.spending), //zmienić na push
+                spendings: state.spendings.concat(action.spending),
                 added: true
             }
         case actions.ADD_SPENDING_START:
@@ -105,26 +75,37 @@ const reducer = (state = initialState, action) => {
         case actions.GET_COLUMNS_SUCCESS:
             const newColumns = action.columns.map(c => {
                 return {
-                key: c.column_name,
-                name: c.column_name.charAt(0).toUpperCase() + c.column_name.slice(1),
-                editable: true,
-                resizable: true,
-                filterable: true,
-                filterRenderer: setFilter(c)
+                title: c.name,
+                name: c.name
             }})
             return {
                 ...state,
                 columns: newColumns
             }
         case actions.UPDATE_DATA_SUCCESS:
+            const rows = state.spendings.map(row => (action.spending.id === row.id ? action.spending : row));
             return {
                 ...state,
-                spendings: action.spendings
+                spendings: rows
             }
         case actions.ADDING_INIT:
             return {
                 ...state,
                 added: false
+            }
+        case actions.DELETE_SPENDING_FAIL:
+            return {
+                ...state
+            }
+        case actions.DELETE_SPENDING_START: 
+            return {
+                ...state
+            }
+        case actions.DELETE_SPENDING_SUCCESS:
+            const rows2 = state.spendings.filter(row => action.spendingId !== row.id);
+            return{
+                ...state,
+                spendings: rows2
             }
         default:
             return state;
