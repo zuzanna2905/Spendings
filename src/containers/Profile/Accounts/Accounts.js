@@ -28,7 +28,7 @@ class Accounts extends Component {
 
     render() {
         const { value } = this.state;
-        let inputAccount = <NewAccount/>
+        let inputAccount = <TabContainer><NewAccount/></TabContainer>
         let accountsList = <Spinner />
         let tabs = null;
         if(this.props.accounts){

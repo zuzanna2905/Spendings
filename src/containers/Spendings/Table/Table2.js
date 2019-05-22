@@ -224,7 +224,6 @@ class Table2 extends React.PureComponent {
 	changePageSize = pageSize => this.setState({ pageSize });
 	commitChanges = ({ added, changed, deleted }) => {
 	if (added) {
-		console.log(added)
 		added = {
 			...added[0],
 			id: 0,
@@ -255,7 +254,6 @@ render() {
 	const spendings = this.props.spendings;
 	const acc = this.props.accounts;
 	const cats = this.props.cats;
-	console.log(cats)
 	let table = <p>No data</p>
 	if(spendings && acc && cats) {
 		const rows = spendings.map(s => {
