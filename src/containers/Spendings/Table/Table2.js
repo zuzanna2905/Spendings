@@ -4,12 +4,12 @@ import * as actions from '../../../store/actions/index';
 import {
 	SortingState, EditingState, PagingState, SummaryState,
 	IntegratedPaging, IntegratedSorting, IntegratedSummary,
-	DataTypeProvider
+	DataTypeProvider, FilteringState, IntegratedFiltering,
 } from '@devexpress/dx-react-grid';
 import {
 	Grid, Table, TableHeaderRow, TableEditRow, TableEditColumn,
 	PagingPanel, DragDropProvider, TableColumnReordering,
-	TableFixedColumns, TableSummaryRow,
+	TableFixedColumns, TableSummaryRow, TableFilterRow,
 } from '@devexpress/dx-react-grid-material-ui';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -109,8 +109,8 @@ const LookupEditCellBase = ({ availableColumnValues, value, onValueChange, class
 			)}
 		>
 			{availableColumnValues.map(item => (
-			<MenuItem key={item} value={item}>
-				{item}
+			<MenuItem key={item.id} value={item.id}>
+				{item.name}
 			</MenuItem>
 			))}
 		</Select>
@@ -179,6 +179,7 @@ class Table2 extends React.PureComponent {
 		],
 		numericColumns: ['value'],
 		dateColumns: ['date'],
+        filters: [{ columnName: 'account', value: '' }],
 		sorting: [{ columnName: 'date', direction: 'desc' }],
 		editingRowIds: [],
 		addedRows: [],
@@ -191,32 +192,31 @@ class Table2 extends React.PureComponent {
 		totalSummaryItems: [
 		{ columnName: 'value', type: 'sum' },
 		{ columnName: 'date', type: 'count' },
-		],
-		availableValues : {
-			category : [1, 2, 3, 4],
-			account: ['melo']
-		}
+		]
 	}
 
 	editCell = (props) => {
 		const { column } = props;
-		const availableColumnValues = this.state.availableValues[column.name];
-		if (availableColumnValues) {
-			return <LookupEditCell {...props} availableColumnValues={availableColumnValues} />;
+		if (column.name === 'category') {
+			return <LookupEditCell {...props} availableColumnValues={this.props.cats} />;
+		}
+		if(column.name === 'account'){
+			return <LookupEditCell {...props} availableColumnValues={this.props.accounts} />;
 		}
 		return <TableEditRow.Cell {...props} />;
 	};
 
+    changeFilters = filters => this.setState({ filters });
 	changeSorting = sorting => this.setState({ sorting });
 	changeEditingRowIds = editingRowIds => this.setState({ editingRowIds });
 	changeAddedRows = addedRows => this.setState({
 		addedRows: addedRows.map(row => (Object.keys(row).length ? row : {
 		value: 10,
 		date: new Date().toISOString().split('T')[0],
-		account: this.state.availableValues.account[0],
-		category: this.state.availableValues.category[0],
-		name: 'biedronka',
-		description: 'fruits'
+		account: this.props.accounts[0],
+		category: this.props.cats[0],
+		name: '',
+		description: ''
 		})),
 	});
 	changeRowChanges = rowChanges => this.setState({ rowChanges });
@@ -224,12 +224,11 @@ class Table2 extends React.PureComponent {
 	changePageSize = pageSize => this.setState({ pageSize });
 	commitChanges = ({ added, changed, deleted }) => {
 	if (added) {
+		console.log(added)
 		added = {
 			...added[0],
-			category: parseInt(added[0].category),
 			id: 0,
 			user: this.props.userId,
-			value: parseInt(added[0].value)
 		}
 		this.props.addSpending(this.props.token, added)
 	}
@@ -252,11 +251,21 @@ class Table2 extends React.PureComponent {
 render() {
 	const { columns, tableColumnExtensions, sorting, editingRowIds, addedRows, rowChanges,
 			currentPage, pageSize, pageSizes, columnOrder, leftFixedColumns, totalSummaryItems,
-			numericColumns, dateColumns } = this.state;
-	const rows = this.props.spendings;
+			numericColumns, dateColumns, filters } = this.state;
+	const spendings = this.props.spendings;
+	const acc = this.props.accounts;
+	const cats = this.props.cats;
+	console.log(cats)
 	let table = <p>No data</p>
-	if(rows) {
-	table =
+	if(spendings && acc && cats) {
+		const rows = spendings.map(s => {
+            return {
+                ...s, 
+                category: cats.findIndex(c=> c.id === s.category) !== -1 ? cats[cats.findIndex(c=> c.id === s.category)].name : 'none',
+                account: acc.findIndex(a => a.id === s.account) !== -1 ? acc[acc.findIndex(a => a.id === s.account)].name : 'none'
+            }
+        });
+		table =
 		<Paper>
 			<Grid
 				rows={rows}
@@ -291,7 +300,13 @@ render() {
 				<SummaryState
 					totalItems={totalSummaryItems}
 				/>
+				
+				<FilteringState
+				filters={filters}
+				onFiltersChange={this.changeFilters}
+				/>
 
+				<IntegratedFiltering />
 				<IntegratedSorting />
 				<IntegratedPaging />
 				<IntegratedSummary />
@@ -307,6 +322,7 @@ render() {
 					onOrderChange={this.changeColumnOrder}
 				/>
 				<TableHeaderRow showSortingControls />
+				<TableFilterRow />
 				<TableEditRow
 					cellComponent={this.editCell}
 				/>
@@ -339,7 +355,8 @@ const mapStateToProps = state => {
 		columns: state.spend.columns,
 		cats: state.spend.categories,
 		accounts: state.prof.accounts,
-		token: state.sess.token
+		token: state.sess.token,
+		userId: state.sess.userId
 	}
 }
 
