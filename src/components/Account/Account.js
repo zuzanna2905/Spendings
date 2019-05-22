@@ -51,6 +51,7 @@ const lastSpend = (spendings, account) => {
         date = values.reduce(function (a, b) {
             return a.date > b.date ? a : b; 
         });
+        date.value.toFixed(2);
     }
     return date.value;
 }

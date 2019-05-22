@@ -135,7 +135,7 @@ class Charts extends Component {
     render() {
         const {spendings} = this.props;
         const filtered = {...this.state.filtered};
-        let charts = <h1>NO DATA FOR DISPLAY</h1>; //<Redirect to ='/spendings' />;
+        let charts = <h1>NO DATA FOR DISPLAY</h1>;
         if(spendings){
             charts = <Fragment>
                 <div className={classes.Filter}>

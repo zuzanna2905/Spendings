@@ -12,8 +12,8 @@ const xyPlot = (props) => {
         xType="ordinal"
         margin={{bottom: 80, left: 80}}
         className="ma1 center"
-        height={500}
-        width={550}
+        height={450}
+        width={500}
         yDomain={[0,props.max + 50]}
         color="white"
         stroke="black"

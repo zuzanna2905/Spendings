@@ -12,17 +12,7 @@ class Profile extends Component {
     render() {
         return (
             <div className={classes.Profile}>
-                <div>                
-                    <h1>PROFILE</h1>
-                    <h3>Your personal data</h3>
-                    <div className={classes.Data}>
-                        {
-                            Object.keys(this.props.profile).map(v => {
-                                return <p key = {v} ><span>{v}: </span>{this.props.profile[v]}</p>
-                            })
-                        }
-                    </div>
-                </div>
+                <h1>Accounts managing</h1>
                 <div>
                     <Accounts/>
                 </div>

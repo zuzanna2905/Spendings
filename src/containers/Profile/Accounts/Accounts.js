@@ -41,7 +41,6 @@ class Accounts extends Component {
         }
         return (
             <div className={classes.root}>
-                <h3>Accounts managing</h3>
                 <AppBar position="static" style={{backgroundColor: 'transparent', boxShadow: 'none'}} className={classes.app}>
                     <Tabs
                     value={value}
