@@ -20,22 +20,21 @@ class App extends Component {
   render() {
     let routes = (
       <Switch>
-        <Route path='/' exact component={Home} />
+        <Route path='/home' exact component={Home} />
         <Route path='/signup' component={Signup}/>
         <Route path='/login' component={Login}/>
-        <Redirect to='/'/>
+        <Redirect path='/' to='/home' />
       </Switch>
     )
     if(this.props.isAuthenticated) {
       routes = (
         <Switch>
-          <Route path='/' exact component={Home} />
           <Route path='/spendings' component={Spendings} />
           <Route path='/profile' component={Profile} />
           <Route path='/reports' component={Reports}/>
           <Route path='/charts' component={Charts}/>
           <Route path='/logout' component={Logout}/>
-          <Redirect to='/'/>
+          <Redirect path='/' to='/spendings'/>
       </Switch>
       )
     }
