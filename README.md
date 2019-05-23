@@ -17,7 +17,7 @@ The app is based on React/Redux, JavaScript, CSS3, HTML5, Firebase, momentJS, Re
 Tests: not yet
 
 ### checkout on
-spendings-5d14b.web.app
+https://spendings-5d14b.web.app/home
 
 ### `npm start`
 
