@@ -5,6 +5,7 @@ import classes from './Charts.css';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from '../../../components/UI/Select/Select';
+import CategoryChart from '../../../components/Chart/CategoryChart/CategoryChart';
 
 class Charts extends Component {
     state = {
@@ -18,8 +19,12 @@ class Charts extends Component {
                 {id: 4, value: 'Year'},
                 {id: 5, value: 'All'}
             ]
-        }
-        //todo: account filters
+        },
+        showing: 'plot'
+    }
+
+    setShow = (event) => {
+        this.setState({showing: event})
     }
 
     showData = () => {
@@ -134,10 +139,14 @@ class Charts extends Component {
 
     render() {
         const {spendings} = this.props;
+        const {showing } = this.state;
         const filtered = {...this.state.filtered};
         let charts = <h1>NO DATA FOR DISPLAY</h1>;
         if(spendings){
             charts = <Fragment>
+                <button onClick={() => this.setShow('radial')}>Radial</button>
+                <button onClick={() => this.setShow('plot')}>Plot</button>
+                <button onClick={() => this.setShow('category')}>Category</button>
                 <div className={classes.Filter}>
                     <Select
                         value={filtered.value} 
@@ -147,17 +156,28 @@ class Charts extends Component {
                     />
                 </div>
                 <div className={classes.Charts}>
+                
+                {showing === 'radial'  ?
                     <RadialChart 
                     data={this.RadialCategory(this.showData(spendings))} 
                     title={`[Last ${filtered.value} Spendings]`}
-                    />
+                    /> : null
+                }
+                { showing === 'plot' ? 
                     <XYPlot 
                         max={this.getMaxCat(this.showData(spendings))} 
                         data={this.sumByCategory(this.showData(spendings))}
                         chartLabelY={"[Categories]"}
                         chartLabelX={"[Values]"}
                         chartTitle={`[Last ${filtered.value} Spendings]`}
+                    /> : null}
+                { showing === 'category' ?                     
+                    <CategoryChart 
+                    data={this.RadialCategory(this.showData(spendings))} 
+                    title={`[Last ${filtered.value} Spendings]`}
                     />
+                    : null
+                }
                 </div>
             </Fragment>
         }

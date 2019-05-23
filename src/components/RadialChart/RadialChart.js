@@ -1,31 +1,18 @@
 import React from 'react';
-import {
-  ChartLabel,
-  RadialChart
-} from 'react-vis';
+import { Tooltip, Pie, PieChart } from 'recharts';
 
-const radialChart = (props) => {
+class radialChart extends React.Component {
+  render() {
+    const {data} = this.props;
+  const PieListChart = (<PieChart width={730} height={350}>
+    <Pie data={data} dataKey="angle" nameKey="label" cx="50%" cy="50%" outerRadius={150} fill="#8884d8" label innerRadius={60} />
+    <Tooltip/>
+  </PieChart>)
   return (
     <div>
-      <RadialChart
-        className="ma1 center"
-        data={props.data}
-        margin={{bottom: 100}}
-        showLabels={true}
-        labelsRadiusMultiplier={0.95}
-        width={400}
-        height={400} 
-      >
-        <ChartLabel
-        text={props.title}
-        className="alt-chart-label"
-        includeMargin={false}
-        xPercent={0.3}
-        yPercent={0.6}
-        />
-      </RadialChart>
+      {PieListChart}
     </div>
   )
-};
+}};
 
 export default radialChart;
