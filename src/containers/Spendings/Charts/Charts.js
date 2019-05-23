@@ -20,7 +20,7 @@ class Charts extends Component {
                 {id: 5, value: 'All'}
             ]
         },
-        showing: 'category',
+        showing: 'plot',
         category: {name: 'sport', id: 3},
         count: 4
     }
@@ -158,8 +158,8 @@ class Charts extends Component {
         let charts = <h1>NO DATA FOR DISPLAY</h1>;
         if(spendings){
             charts = <Fragment>
-                <button onClick={() => this.setShow('radial')}>Radial</button>
                 <button onClick={() => this.setShow('plot')}>Plot</button>
+                <button onClick={() => this.setShow('radial')}>Radial</button>
                 <button onClick={() => this.setShow('category')}>Category</button>
                 <div className={classes.Filter}>
                     <Select
