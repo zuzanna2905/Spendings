@@ -10,8 +10,8 @@ import CategoryChart from '../../../components/Chart/CategoryChart/CategoryChart
 class Charts extends Component {
     state = {
         filtered : {
-            id: 'Filter spendings by date ', 
-            value: 'Year',
+            id: 'Filter spendings by ',
+            value: 'Week',
             options: [
                 {id: 1, value: 'Day'},
                 {id: 2, value: 'Week'},
@@ -20,35 +20,40 @@ class Charts extends Component {
                 {id: 5, value: 'All'}
             ]
         },
-        showing: 'plot'
+        showing: 'category',
+        category: {name: 'sport', id: 3},
+        count: 4
     }
 
     setShow = (event) => {
         this.setState({showing: event})
     }
 
-    showData = () => {
-        const filteredData = this.props.spendings;
+    showData = (filteredData, count=0) => {
         switch(this.state.filtered.value) {
             case 'Day':
                 return filteredData.filter(f => {
-                    let today = moment().format('YYYY-MM-DD');
-                    return f.date >= today
+                    let today = moment().subtract(count, 'd').format('YYYY-MM-DD');
+                    let beforeToday = moment().subtract(count+1, 'd').format('YYYY-MM-DD');
+                    return f.date <= today && f.date > beforeToday
                 })
             case 'Week':
                 return filteredData.filter(f => {
-                    let week = moment().day(-7).format('YYYY-MM-DD');
-                    return f.date >= week
+                    let week = moment().subtract(count, 'w').format('YYYY-MM-DD');
+                    let beforeWeek = moment().subtract(count+1, 'w').format('YYYY-MM-DD');
+                    return f.date <= week && f.date > beforeWeek
                 })
             case 'Month':
                 return filteredData.filter(f => {
-                    let month = moment().day(-30).format('YYYY-MM-DD');
-                    return f.date >= month
+                    let month = moment().subtract(count, 'M').format('YYYY-MM-DD');
+                    let beforeMonth = moment().subtract(count+1, 'M').format('YYYY-MM-DD');
+                    return f.date <= month && f.date > beforeMonth
                 })
             case 'Year':
                 return filteredData.filter(f => {
-                    let year = moment().day(-365).format('YYYY-MM-DD');
-                    return f.date >= year
+                    let year = moment().subtract(count, 'y').format('YYYY-MM-DD');
+                    let beforeYear = moment().subtract(count+1, 'y').format('YYYY-MM-DD');
+                    return f.date <= year && f.date > beforeYear
                 })
             case 'All':
                 return filteredData.filter(f => {
@@ -82,7 +87,7 @@ class Charts extends Component {
         const values = this.props.cats.map(c=> {
                 return {
                 x: c.name,
-                y: array.filter(a => a.category === c.id)
+                value: array.filter(a => a.category === c.id)
                 .reduce(this.sumCat,0)
             }})
         return values;
@@ -96,6 +101,15 @@ class Charts extends Component {
                 .reduce(this.sumCat,0)
             }})
         const values = categories.filter(c => c.angle !== 0);
+        return values;
+    }
+
+    CategoryData = (array) => {
+        const category = array.filter(a => a.category === this.state.category.id);
+        let values = []
+        for(let i = this.state.count-1; i >= 0; i--){
+            values.push(this.RadialCategory(this.showData(category, i))[0])
+        }
         return values;
     }
     
@@ -150,7 +164,7 @@ class Charts extends Component {
                 <div className={classes.Filter}>
                     <Select
                         value={filtered.value} 
-                        name={filtered.id} 
+                        name={showing=== 'category' ? 'Filter ' + this.state.category.name + ' by last ' + this.state.count + ' ': filtered.id} 
                         options={filtered.options}
                         changed={(e) => this.inputHandler(e.target.value)}
                     />
@@ -173,8 +187,7 @@ class Charts extends Component {
                     /> : null}
                 { showing === 'category' ?                     
                     <CategoryChart 
-                    data={this.RadialCategory(this.showData(spendings))} 
-                    title={`[Last ${filtered.value} Spendings]`}
+                    data={this.CategoryData(spendings)} 
                     />
                     : null
                 }

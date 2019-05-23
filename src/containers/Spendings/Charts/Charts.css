@@ -1,5 +1,10 @@
-.Container{
-    margin: 90px auto 10px;
+.Container {
+    margin: 80px 20px 40px 20px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .Charts {
