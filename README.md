@@ -5,17 +5,19 @@ Idea
 A simple application to managing your daily spendings.
 Data table with informations about your spendings.
 Possibility to manipulating on data (adding, editing, deleting).
-Also you can managing your profile data.
-Spendings charts in choosen date.
-To using the application logging in is needed(not yet).
-The data is stored in database.
+Spendings charts in choosen date range.
+To using the application logging in is needed.
+The data is stored in database Firebase.
 Soon: generating spendings reports
 
 
 Technologies
 
-The app is based on React/Redux, JavaScript, CSS3, HTML5, NodeJS
+The app is based on React/Redux, JavaScript, CSS3, HTML5, Firebase, momentJS, React Router, Recharts, Material-UI
 Tests: not yet
+
+### checkout on
+spendings-5d14b.web.app
 
 ### `npm start`
 
