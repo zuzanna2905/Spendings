@@ -12,10 +12,8 @@ export const setParamValue = (id, value) => {
 export const addSpending = (token, spending) => {
     return dispatch => {
         dispatch(addSpendingStart());
-        console.log(spending)
         axios.post('https://spendings-5d14b.firebaseio.com/spendings.json?auth=' + token, spending)
         .then(r => {
-            console.log(r)
             dispatch(addSpendingSuccess({ ...spending, id: r.data.name }));
         })
         .catch(err => {

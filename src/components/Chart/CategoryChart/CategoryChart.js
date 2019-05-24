@@ -6,7 +6,7 @@ class categoryChart extends React.Component {
   const {data} = this.props;
   const renderLineChart = (
     <LineChart width={800} height={400} data={data}>
-      <Line type="monotone" dataKey="angle" nameKey='label' stroke="#8884d8" />
+      <Line type="monotone" dataKey="angle" nameKey='label' stroke="#8884d8" activeDot={{ r: 8 }} strokeWidth={8} />
       <CartesianGrid stroke="#ccc" />
       <YAxis />
       <Tooltip />

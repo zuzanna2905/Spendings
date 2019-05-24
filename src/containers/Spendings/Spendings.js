@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Demo from './Table/Table2';
+import Table from './Table/Table';
 import classes from './Spendings.css';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -26,7 +26,7 @@ class Spendings extends Component {
         return (
             <div className={classes.Spendings}>
                 <h3>SPENDINGS</h3>
-                <Demo/>
+                <Table/>
             </div>
         );
     }

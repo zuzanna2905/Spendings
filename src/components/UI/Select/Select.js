@@ -5,16 +5,16 @@ const select = (props) => {
     let options = null;
     if(props.options){
         options = props.options.map(o => {
-            return <option key={o.value} value={o.value}>{o.value}</option>
+            return <option key={o.id} value={o.name}>{o.name}</option>
         })
     }
-    let label = props.value ? props.value: `Select your ${props.name}`
+    let label = props.value ? props.value: `Select your ${props.label}`
     return (
         <Fragment>
-            <label className={classes.Label}>{props.name}</label>
+            <label className={classes.Label}>{props.label}</label>
             <select 
                 className={classes.Select} 
-                name={props.name} 
+                name={props.label} 
                 value={props.value} 
                 onChange={props.changed}
             >
