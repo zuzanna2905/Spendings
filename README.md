@@ -16,7 +16,7 @@ Technologies
 The app is based on React/Redux, JavaScript, CSS3, HTML5, Firebase, momentJS, React Router, Recharts, Material-UI
 Tests: not yet
 
-### checkout on
+### check on
 https://spendings-5d14b.web.app/home
 
 ### `npm start`
